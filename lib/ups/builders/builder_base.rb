@@ -124,6 +124,7 @@ module UPS
           org << packaging_type
           org << element_with_value('Description', 'Rate')
           org << package_weight(opts[:weight], opts[:unit])
+          org << package_dimensions(opts[:dimensions]) if opts[:dimensions]
         end
       end
 
@@ -176,6 +177,15 @@ module UPS
         Element.new('PackageWeight').tap do |org|
           org << unit_of_measurement(unit)
           org << element_with_value('Weight', weight)
+        end
+      end
+
+      def package_dimensions(dimensions)
+        Element.new('Dimensions').tap do |org|
+          org << unit_of_measurement(dimensions[:unit])
+          org << element_with_value('Length', dimensions[:length].to_s[0..8])
+          org << element_with_value('Width', dimensions[:width].to_s[0..8])
+          org << element_with_value('Height', dimensions[:height].to_s[0..8])
         end
       end
 

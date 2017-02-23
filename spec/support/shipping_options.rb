@@ -29,7 +29,13 @@ module ShippingOptions
   def package
     {
       weight: '0.5',
-      unit: 'KGS'
+      unit: 'KGS',
+      dimensions: {
+        length: 40.0,
+        width: 30.0,
+        height: 20.0,
+        unit: 'CM'
+      }
     }
   end
 end
