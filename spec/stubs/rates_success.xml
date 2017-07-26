@@ -9,6 +9,7 @@
          <Code>11</Code>
       </Service>
       <RatedShipmentWarning>Your invoice may vary from the displayed reference rates</RatedShipmentWarning>
+      <RatedShipmentWarning>Ship To Address Classification is changed from Commercial to Residential</RatedShipmentWarning>
       <BillingWeight>
          <UnitOfMeasurement>
             <Code>KGS</Code>

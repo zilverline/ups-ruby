@@ -33,11 +33,18 @@ module UPS
           parse_total_charges value
         elsif switch_active?(:RatedShipment, :NegotiatedRates, :MonetaryValue)
           parse_negotiated_rate value
+        elsif switch_active?(:RatedShipment, :RatedShipmentWarning)
+          parse_rated_shipment_warning value
         end
       end
 
       def parse_negotiated_rate(value)
         @current_rate[:negotiated_rate] = value.as_s
+      end
+
+      def parse_rated_shipment_warning(value)
+        @current_rate[:warnings] ||= []
+        @current_rate[:warnings] << value.as_s
       end
 
       def parse_service_code(value)

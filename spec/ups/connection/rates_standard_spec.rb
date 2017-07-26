@@ -38,10 +38,33 @@ describe UPS::Connection do
     it "should return standard rates" do
       expect(subject.rated_shipments).wont_be_empty
       expect(subject.rated_shipments).must_equal [
-        {:service_code=>"11", :service_name=>"UPS Standard", :total=>"25.03"},
-        {:service_code=>"65", :service_name=>"UPS Saver", :total=>"45.82"},
-        {:service_code=>"54", :service_name=>"Express Plus", :total=>"82.08"},
-        {:service_code=>"07", :service_name=>"Express", :total=>"47.77"}
+        {
+          :service_code=>"11",
+          :service_name=>"UPS Standard",
+          :warnings=>[
+            "Your invoice may vary from the displayed reference rates",
+            "Ship To Address Classification is changed from Commercial to Residential"
+          ],
+          :total=>"25.03"
+        },
+        {
+          :service_code=>"65",
+          :service_name=>"UPS Saver",
+          :warnings=>["Your invoice may vary from the displayed reference rates"],
+          :total=>"45.82"
+        },
+        {
+          :service_code=>"54",
+          :service_name=>"Express Plus",
+          :warnings=>["Your invoice may vary from the displayed reference rates"],
+          :total=>"82.08"
+        },
+        {
+          :service_code=>"07",
+          :service_name=>"Express",
+          :warnings=>["Your invoice may vary from the displayed reference rates"],
+          :total=>"47.77"
+        }
       ]
     end
   end
