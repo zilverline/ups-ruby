@@ -11,7 +11,6 @@ ENV['UPS_PASSWORD'] = '' unless ENV.key? 'UPS_PASSWORD'
 ENV['UPS_ACCOUNT_NUMBER'] = '' unless ENV.key? 'UPS_ACCOUNT_NUMBER'
 
 require 'nokogiri'
-require 'minitest/spec'
 require 'minitest/autorun'
 
 require 'support/schema_path'

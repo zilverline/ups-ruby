@@ -65,7 +65,7 @@ Yard documentation can be found at [RubyDoc](http://www.rubydoc.info/github/ptri
 
 ## Running the tests
 
-After installing dependencies with `bundle install`, you can run the unit tests using `rspec`.
+After installing dependencies with `bundle install`, you can run the unit tests using `rake`.
 
 ## Contributers
 
