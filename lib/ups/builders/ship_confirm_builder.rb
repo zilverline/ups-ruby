@@ -54,6 +54,17 @@ module UPS
         shipment_root << element_with_value('Description', description)
       end
 
+      # Adds ReferenceNumber to the XML document being built
+      #
+      # @param [Hash] opts A Hash of data to build the requested section
+      # @option opts [String] :code Code
+      # @option opts [String] :value Value
+      #
+      # @return [void]
+      def add_reference_number(opts = {})
+        shipment_root << reference_number(opts[:code], opts[:value])
+      end
+
       private
 
       def gif?(string)
@@ -80,6 +91,12 @@ module UPS
         multi_valued('LabelStockSize',
                      'Height' => size[:height].to_s,
                      'Width' => size[:width].to_s)
+      end
+
+      def reference_number(code, value)
+        multi_valued('ReferenceNumber',
+                     'Code' => code.to_s,
+                     'Value' => value.to_s)
       end
     end
   end

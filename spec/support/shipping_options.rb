@@ -38,4 +38,11 @@ module ShippingOptions
       }
     }
   end
+
+  def reference_number
+    {
+      code: 'IK',
+      value: '1234567890'
+    }
+  end
 end
