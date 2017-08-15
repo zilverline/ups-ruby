@@ -1,5 +1,5 @@
-require 'codeclimate-test-reporter'
-CodeClimate::TestReporter.start
+require 'simplecov'
+SimpleCov.start
 
 path = File.expand_path('../../', __FILE__)
 require "#{path}/lib/ups.rb"
