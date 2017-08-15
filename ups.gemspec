@@ -4,9 +4,9 @@ Gem::Specification.new do |gem|
   gem.name        = 'ups'
   gem.version     = UPS::Version::STRING
   gem.platform    = Gem::Platform::RUBY
-  gem.authors     = ['Paul Trippett']
-  gem.email       = ['paul@veeqo.com']
-  gem.homepage    = 'http://github.com/ptrippett/ups'
+  gem.authors     = ['Veeqo']
+  gem.email       = ['helpme@veeqo.com']
+  gem.homepage    = 'http://github.com/veeqo/ups'
   gem.summary     = 'UPS'
   gem.description = 'UPS Gem for accessing the UPS API from Ruby'
 
