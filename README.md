@@ -15,7 +15,7 @@ This gem is currently used in production at [Veeqo](http://www.veeqo.com)
 
 ## Installation
 
-    gem install ups
+    gem install ups-ruby
 
 ...or add it to your project's [Gemfile](http://bundler.io/).
 

@@ -1,16 +1,16 @@
 require File.expand_path('../lib/ups/version', __FILE__)
 
 Gem::Specification.new do |gem|
-  gem.name        = 'ups'
+  gem.name        = 'ups-ruby'
   gem.version     = UPS::Version::STRING
   gem.platform    = Gem::Platform::RUBY
   gem.authors     = ['Veeqo']
   gem.email       = ['helpme@veeqo.com']
-  gem.homepage    = 'http://github.com/veeqo/ups'
+  gem.homepage    = 'https://github.com/veeqo/ups-ruby'
   gem.summary     = 'UPS'
   gem.description = 'UPS Gem for accessing the UPS API from Ruby'
 
-  gem.license     = 'AGPL'
+  gem.license     = 'AGPL-3.0'
 
   gem.required_rubygems_version = '>= 1.3.6'
 
