@@ -43,8 +43,9 @@ describe UPS::Connection do
     it "should do what ever it takes to get that shipment shipped!" do
       subject.wont_equal false
       subject.success?.must_equal true
-      subject.graphic_image.must_be_kind_of File
-      subject.html_image.must_be_kind_of File
+      subject.label_graphic_image.must_be_kind_of File
+      subject.label_html_image.must_be_kind_of File
+      subject.form_graphic_image.must_be_kind_of File
       subject.tracking_number.must_equal '1Z2220060292353829'
     end
   end
