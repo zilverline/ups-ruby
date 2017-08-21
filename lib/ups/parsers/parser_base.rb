@@ -37,7 +37,7 @@ module UPS
       end
 
       def switch_active?(*elements)
-        elements.all? { |element| switches[element] == true }
+        elements.flatten.all? { |element| switches[element] == true }
       end
 
       def success?

@@ -55,7 +55,8 @@ module ShippingOptions
       products: [
         {
           description: 'White coffee mug',
-          number: '14.02',
+          number: '1',
+          value: '14.02',
           dimensions_unit: 'CM',
           part_number: 'MUG-01-WHITE',
           commodity_code: '1234',
@@ -63,7 +64,8 @@ module ShippingOptions
         },
         {
           description: 'Red coffee mug',
-          number: '14.05',
+          number: '1',
+          value: '14.05',
           dimensions_unit: 'CM',
           part_number: 'MUG-01-RED',
           commodity_code: '5678',

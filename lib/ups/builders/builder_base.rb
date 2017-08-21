@@ -99,6 +99,21 @@ module UPS
         shipment_root << OrganisationBuilder.new('ShipTo', opts).to_xml
       end
 
+      # Adds a SoldTo section to the XML document being built
+      #
+      # @param [Hash] opts A Hash of data to build the requested section
+      # @option opts [String] :company_name Company Name
+      # @option opts [String] :phone_number Phone Number
+      # @option opts [String] :address_line_1 Address Line 1
+      # @option opts [String] :city City
+      # @option opts [String] :state State
+      # @option opts [String] :postal_code Zip or Postal Code
+      # @option opts [String] :country Country
+      # @return [void]
+      def add_sold_to(opts = {})
+        shipment_root << OrganisationBuilder.new('SoldTo', opts).to_xml
+      end
+
       # Adds a ShipFrom section to the XML document being built
       #
       # @param [Hash] opts A Hash of data to build the requested section
