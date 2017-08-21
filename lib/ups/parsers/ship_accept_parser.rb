@@ -16,8 +16,8 @@ module UPS
       def value(value)
         initialize_document_root_paths
 
-        parse_form_data(value)
-        parse_label_data(value)
+        parse_document_data(value, 'label')
+        parse_document_data(value, 'form')
         parse_tracking_number(value)
 
         super
@@ -28,38 +28,32 @@ module UPS
         self.form_root_path  = [:ShipmentResults, :Form, :Image]
       end
 
-      def parse_form_data(value)
-        graphic_extension_path = form_root_path + [:ImageFormat]
+      def parse_document_data(value, type)
+        root_path = self.send("#{type}_root_path")
 
-        parse_graphic_extension(graphic_extension_path, value, 'form')
-        parse_graphic_image(form_root_path, value, 'form')
+        parse_graphic_extension(root_path, value, type)
+        parse_graphic_image(root_path, value, type)
+        parse_html_image(root_path, value, type)
       end
 
-      def parse_label_data(value)
-        graphic_extension_path = label_root_path + [:LabelImageFormat]
-
-        parse_graphic_extension(graphic_extension_path, value, 'label')
-        parse_graphic_image(label_root_path, value, 'label')
-        parse_html_image(label_root_path, value, 'label')
-      end
-
-      def parse_graphic_image(path, value, type)
-        switch_path = path + [:GraphicImage].flatten
+      def parse_graphic_image(root_path, value, type)
+        switch_path = (root_path + [:GraphicImage]).flatten
         return unless switch_active?(switch_path)
 
         self.send("#{type}_graphic_image=".to_sym, base64_to_file(value.as_s, type))
       end
 
-      def parse_html_image(path, value, type)
-        switch_path = path + [:HTMLImage].flatten
+      def parse_html_image(root_path, value, type)
+        switch_path = (root_path + [:HTMLImage]).flatten
         return unless switch_active?(switch_path)
 
         self.send("#{type}_html_image=".to_sym, base64_to_file(value.as_s, type))
       end
 
-      # Paths can differ a lot for different doc types and image format
-      def parse_graphic_extension(path, value, type)
-        switch_path = (path + [:Code]).flatten
+      def parse_graphic_extension(root_path, value, type)
+        graphic_extension_subpath = (type == 'label' ? :LabelImageFormat : :ImageFormat)
+
+        switch_path = (root_path + [graphic_extension_subpath] + [:Code]).flatten
         return unless switch_active?(switch_path)
 
         self.send("#{type}_graphic_extension=".to_sym, ".#{value.as_s.downcase}")
