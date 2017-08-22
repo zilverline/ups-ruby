@@ -43,9 +43,24 @@ describe UPS::Connection do
     it "should do what ever it takes to get that shipment shipped!" do
       subject.wont_equal false
       subject.success?.must_equal true
+    end
+
+    it "should return the label data" do
       subject.label_graphic_image.must_be_kind_of File
       subject.label_html_image.must_be_kind_of File
+      subject.label_graphic_extension.must_equal '.gif'
+
+      subject.graphic_image.must_be_kind_of File
+      subject.html_image.must_be_kind_of File
+      subject.graphic_extension.must_equal '.gif'
+    end
+
+    it "should return the requested customs form data" do
       subject.form_graphic_image.must_be_kind_of File
+      subject.form_graphic_extension.must_equal '.pdf'
+    end
+
+    it "should return the tracking number" do
       subject.tracking_number.must_equal '1Z2220060292353829'
     end
   end

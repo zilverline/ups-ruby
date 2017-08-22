@@ -6,6 +6,9 @@ module UPS
     class ShipAcceptParser < ParserBase
       attr_accessor :label_root_path,
                     :form_root_path,
+                    :graphic_image,
+                    :graphic_extension,
+                    :html_image,
                     :label_graphic_image,
                     :label_graphic_extension,
                     :label_html_image,
@@ -37,31 +40,38 @@ module UPS
       end
 
       def parse_graphic_image(root_path, value, type)
-        switch_path = (root_path + [:GraphicImage]).flatten
+        switch_path = build_switch_path(root_path, :GraphicImage)
         return unless switch_active?(switch_path)
 
         self.send("#{type}_graphic_image=".to_sym, base64_to_file(value.as_s, type))
+        self.send("graphic_image=".to_sym, base64_to_file(value.as_s, type)) if type == 'label'
       end
 
       def parse_html_image(root_path, value, type)
-        switch_path = (root_path + [:HTMLImage]).flatten
+        switch_path = build_switch_path(root_path, :HTMLImage)
         return unless switch_active?(switch_path)
 
         self.send("#{type}_html_image=".to_sym, base64_to_file(value.as_s, type))
+        self.send("html_image=".to_sym, base64_to_file(value.as_s, type)) if type == 'label'
       end
 
       def parse_graphic_extension(root_path, value, type)
         graphic_extension_subpath = (type == 'label' ? :LabelImageFormat : :ImageFormat)
 
-        switch_path = (root_path + [graphic_extension_subpath] + [:Code]).flatten
+        switch_path = build_switch_path(root_path, graphic_extension_subpath, :Code)
         return unless switch_active?(switch_path)
 
         self.send("#{type}_graphic_extension=".to_sym, ".#{value.as_s.downcase}")
+        self.send("graphic_extension=".to_sym, ".#{value.as_s.downcase}") if type == 'label'
       end
 
       def parse_tracking_number(value)
         return unless switch_active?(:ShipmentIdentificationNumber)
         self.tracking_number = value.as_s
+      end
+
+      def build_switch_path(*paths)
+        paths.flatten
       end
 
       def base64_to_file(contents, type)
