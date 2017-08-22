@@ -39,7 +39,7 @@ module UPS
       end
 
       def commodity_code
-        element_with_value('CommodityCode', opts[:commodity_code])
+        element_with_value('CommodityCode', opts[:commodity_code]) if opts[:commodity_code]
       end
 
       def origin_country_code
