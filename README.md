@@ -1,8 +1,4 @@
-[![Gem Version](https://img.shields.io/gem/v/ups.svg?style=flat-square)](http://badge.fury.io/rb/ups)
-[![Dependency Status](https://img.shields.io/gemnasium/ptrippett/ups.svg?style=flat-square)](https://gemnasium.com/ptrippett/ups)
-[![Build Status](https://img.shields.io/travis/ptrippett/ups.svg?style=flat-square)](https://travis-ci.org/ptrippett/ups)
-[![Coverage Status](https://img.shields.io/codeclimate/coverage/github/ptrippett/ups.svg?style=flat-square)](https://codeclimate.com/github/ptrippett/ups/coverage)
-[![Code Climate](https://img.shields.io/codeclimate/github/ptrippett/ups.svg?style=flat-square)](https://codeclimate.com/github/ptrippett/ups)
+[![Gem Version](https://img.shields.io/gem/v/ups-ruby.svg?style=flat-square)](http://badge.fury.io/rb/ups-ruby)
 
 # UPS
 
@@ -21,7 +17,7 @@ This gem is currently used in production at [Veeqo](http://www.veeqo.com)
 
 ## Documentation
 
-Yard documentation can be found at [RubyDoc](http://www.rubydoc.info/github/ptrippett/ups).
+Yard documentation can be found at [RubyDoc](http://www.rubydoc.info/github/veeqo/ups-ruby).
 
 ## Sample Usage
 
