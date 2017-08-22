@@ -70,10 +70,6 @@ module UPS
         self.tracking_number = value.as_s
       end
 
-      def build_switch_path(*paths)
-        paths.flatten
-      end
-
       def base64_to_file(contents, type)
         file_config = ['ups', self.send("#{type}_graphic_extension".to_sym)]
         Tempfile.new(file_config, nil, encoding: 'ascii-8bit').tap do |file|

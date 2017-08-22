@@ -40,6 +40,10 @@ module UPS
         elements.flatten.all? { |element| switches[element] == true }
       end
 
+      def build_switch_path(*paths)
+        paths.flatten
+      end
+
       def success?
         ['1', 1].include? status_code
       end
