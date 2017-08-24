@@ -1,4 +1,5 @@
 require File.expand_path('../lib/ups/version', __FILE__)
+require 'English'
 
 Gem::Specification.new do |gem|
   gem.name        = 'ups-ruby'
