@@ -45,4 +45,33 @@ module ShippingOptions
       value: '1234567890'
     }
   end
+
+  def invoice_form
+    {
+      invoice_number: '#P-1234',
+      invoice_date: '20170816',
+      reason_for_export: '',
+      currency_code: 'USD',
+      products: [
+        {
+          description: 'White coffee mug',
+          number: '1',
+          value: '14.02',
+          dimensions_unit: 'CM',
+          part_number: 'MUG-01-WHITE',
+          commodity_code: '1234',
+          origin_country_code: 'US'
+        },
+        {
+          description: 'Red coffee mug',
+          number: '1',
+          value: '14.05',
+          dimensions_unit: 'CM',
+          part_number: 'MUG-01-RED',
+          commodity_code: '5678',
+          origin_country_code: 'US'
+        }
+      ]
+    }
+  end
 end

@@ -12,6 +12,7 @@ class UPS::Builders::TestShipConfirmBuilder < Minitest::Test
       builder.add_ship_from shipper
       builder.add_package package
       builder.add_label_specification 'gif', { height: '100', width: '100' }
+      builder.add_international_invoice invoice_form
       builder.add_description 'Los Pollo Hermanos'
       builder.add_reference_number reference_number
     end
