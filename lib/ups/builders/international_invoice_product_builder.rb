@@ -35,11 +35,11 @@ module UPS
       end
 
       def part_number
-        element_with_value('PartNumber', opts[:part_number][0..9]) if opts[:part_number]
+        element_with_value('PartNumber', opts[:part_number][0..9])
       end
 
       def commodity_code
-        element_with_value('CommodityCode', opts[:commodity_code]) if opts[:commodity_code]
+        element_with_value('CommodityCode', opts[:commodity_code])
       end
 
       def origin_country_code
@@ -60,8 +60,8 @@ module UPS
       def to_xml
         Element.new(name).tap do |product|
           product << description
-          product << commodity_code
-          product << part_number
+          product << commodity_code if opts[:commodity_code]
+          product << part_number if opts[:part_number]
           product << origin_country_code
           product << product_unit
         end
