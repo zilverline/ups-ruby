@@ -15,6 +15,7 @@ class UPS::Builders::TestShipConfirmBuilder < Minitest::Test
       builder.add_international_invoice invoice_form
       builder.add_description 'Los Pollo Hermanos'
       builder.add_reference_number reference_number
+      builder.add_insurance_charge '5.00'
     end
   end
 
