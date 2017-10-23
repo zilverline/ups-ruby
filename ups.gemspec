@@ -11,7 +11,7 @@ Gem::Specification.new do |gem|
   gem.summary     = 'UPS'
   gem.description = 'UPS Gem for accessing the UPS API from Ruby'
 
-  gem.license     = 'AGPL-3.0'
+  gem.license     = 'MIT'
 
   gem.required_rubygems_version = '>= 1.3.6'
 
