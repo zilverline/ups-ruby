@@ -16,6 +16,9 @@ module UPS
     '83' => 'UPS Today Dedicated Courier',
     '84' => 'UPS Today Intercity',
     '85' => 'UPS Today Express',
-    '86' => 'UPS Today Express Saver'
+    '86' => 'UPS Today Express Saver',
+    'M4' => 'Expedited Mail Innovations',
+    'M5' => 'Priority Mail Innovations',
+    'M6' => 'Economy Mail Innovations'
   }
 end

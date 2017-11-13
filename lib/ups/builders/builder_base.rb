@@ -175,6 +175,14 @@ module UPS
         end
       end
 
+      def add_usps_endorsement(value)
+        shipment_root << element_with_value('USPSEndorsement', value)
+      end
+
+      def add_package_id(value)
+        shipment_root << element_with_value('PackageId', value)
+      end
+
       # Returns a String representation of the XML document being built
       #
       # @return [String]
