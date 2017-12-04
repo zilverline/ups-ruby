@@ -180,7 +180,7 @@ module UPS
       end
 
       def add_package_id(value)
-        shipment_root << element_with_value('PackageId', value)
+        shipment_root << element_with_value('PackageID', value)
       end
 
       # Returns a String representation of the XML document being built
