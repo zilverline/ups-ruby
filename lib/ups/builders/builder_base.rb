@@ -183,6 +183,10 @@ module UPS
         shipment_root << element_with_value('PackageID', value)
       end
 
+      def add_cost_center(value)
+        shipment_root << element_with_value('CostCenter', value)
+      end
+
       # Returns a String representation of the XML document being built
       #
       # @return [String]
