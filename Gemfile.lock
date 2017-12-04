@@ -10,6 +10,7 @@ PATH
 GEM
   remote: http://rubygems.org/
   specs:
+    byebug (9.0.6)
     codeclimate-test-reporter (1.0.5)
       simplecov
     docile (1.1.5)
@@ -35,6 +36,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  byebug
   codeclimate-test-reporter (~> 1.0.0)
   minitest
   nokogiri
