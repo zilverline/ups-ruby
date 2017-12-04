@@ -16,11 +16,11 @@ describe "Mail Innovations" do
       shipment_builder.add_access_request API_KEY, USERNAME, PASSWORD
       shipment_builder.add_shipper company_name: 'Veeqo Limited',
         phone_number: '01792 123456',
-        address_line_1: '11 Wind Street',
-        city: 'Swansea',
-        state: 'Wales',
-        postal_code: 'SA1 1DA',
-        country: 'GB',
+        address_line_1: '1 Infinite Loop',
+        city: 'Cupertino',
+        state: 'California',
+        postal_code: '95014',
+        country: 'US',
         shipper_number: ACCOUNT_NUMBER
       shipment_builder.add_ship_from company_name: 'Apple',
         attention_name: 'John Doe',
@@ -44,10 +44,10 @@ describe "Mail Innovations" do
       shipment_builder.add_package weight: '0.8',
         unit: 'LBS'
       shipment_builder.add_description 'White coffee mug'
-      shipment_builder.add_payment_information '2R466A'
+      shipment_builder.add_payment_information ACCOUNT_NUMBER
       shipment_builder.add_usps_endorsement '2'
-      shipment_builder.add_service 'M4' # returned in rates response
-      # shipment_builder.add_service '01'
+      # shipment_builder.add_service 'M4' # returned in rates response
+      shipment_builder.add_service '01'
     end
 
     byebug
