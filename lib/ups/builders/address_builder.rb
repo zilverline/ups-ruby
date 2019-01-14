@@ -34,15 +34,19 @@ module UPS
       # @return [void]
       def validate
         opts[:state] = case opts[:country].downcase
-                       when 'us'
-                         normalize_us_state(opts[:state])
-                       when 'ca'
-                         normalize_ca_state(opts[:state])
-                       when 'ie'
-                         UPS::Data.ie_state_matcher(opts[:state])
-                       else
-                         ''
-                       end
+        when 'us'
+          normalize_us_state(opts[:state])
+        when 'ca'
+          normalize_ca_state(opts[:state])
+        when 'ie'
+          if opts[:skip_ireland_state_validation]
+            '_' # UPS requires at least one character for Ireland
+          else
+            UPS::Data.ie_state_matcher(opts[:state])
+          end
+        else
+          ''
+        end
       end
 
       # Changes :state based on UPS requirements for US Addresses

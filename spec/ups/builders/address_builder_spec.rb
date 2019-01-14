@@ -93,5 +93,25 @@ describe UPS::Builders::AddressBuilder do
         proc { subject }.must_raise UPS::Exceptions::InvalidAttributeError
       end
     end
+
+    describe "when 'skip_ireland_state_validation' is passed" do
+      before { address_hash.merge!(skip_ireland_state_validation: true) }
+
+      describe "does not normalize the state field" do
+        subject { UPS::Builders::AddressBuilder.new address_hash }
+
+        it "changes the state to a single blank character" do
+          subject.opts[:state].must_equal '_'
+        end
+      end
+
+      describe "when passed a empty state" do
+        subject { UPS::Builders::AddressBuilder.new address_hash.merge({ state: '' }) }
+
+        it "does not throw an exception" do
+          subject.opts[:state].must_equal '_'
+        end
+      end
+    end
   end
 end
