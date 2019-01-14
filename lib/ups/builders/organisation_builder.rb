@@ -26,6 +26,7 @@ module UPS
       def initialize(name, opts = {})
         self.name = name
         self.opts = opts
+        self.opts[:skip_ireland_state_validation] = (name == 'SoldTo')
       end
 
       # Returns an XML representation of company_name
