@@ -15,8 +15,10 @@ module UPS
   end
 
   module Parsers
+    autoload :BaseParser,          'ups/parsers/base_parser'
     autoload :ParserBase,          'ups/parsers/parser_base'
     autoload :RatesParser,         'ups/parsers/rates_parser'
+    autoload :RateParser,          'ups/parsers/rate_parser'
     autoload :ShipConfirmParser,   'ups/parsers/ship_confirm_parser'
     autoload :ShipAcceptParser,    'ups/parsers/ship_accept_parser'
   end

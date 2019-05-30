@@ -47,16 +47,23 @@ describe UPS::Connection do
 
     it "should return the label data" do
       subject.label_graphic_image.must_be_kind_of File
-      subject.label_html_image.must_be_kind_of File
+      subject.label_graphic_image.path.end_with?('.gif').must_equal true
       subject.label_graphic_extension.must_equal '.gif'
 
       subject.graphic_image.must_be_kind_of File
-      subject.html_image.must_be_kind_of File
+      subject.graphic_image.path.end_with?('.gif').must_equal true
       subject.graphic_extension.must_equal '.gif'
+
+      subject.html_image.must_be_kind_of File
+      subject.html_image.path.end_with?('.gif').must_equal true
+
+      subject.label_html_image.must_be_kind_of File
+      subject.label_html_image.path.end_with?('.gif').must_equal true
     end
 
     it "should return the requested customs form data" do
       subject.form_graphic_image.must_be_kind_of File
+      subject.form_graphic_image.path.end_with?('.pdf').must_equal true
       subject.form_graphic_extension.must_equal '.pdf'
     end
 

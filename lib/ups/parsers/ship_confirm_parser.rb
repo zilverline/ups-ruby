@@ -1,15 +1,19 @@
 module UPS
   module Parsers
-    class ShipConfirmParser < ParserBase
-      attr_accessor :identification_number, :shipment_digest
+    class ShipConfirmParser < BaseParser
 
-      def value(value)
-        if switch_active?(:ShipmentIdentificationNumber)
-          self.identification_number = value.as_s
-        elsif switch_active?(:ShipmentDigest)
-          self.shipment_digest = value.as_s
-        end
-        super
+      def identification_number
+        root_response[:ShipmentIdentificationNumber]
+      end
+
+      def shipment_digest
+        root_response[:ShipmentDigest]
+      end
+
+      private
+
+      def root_response
+        parsed_response[:ShipmentConfirmResponse]
       end
     end
   end
