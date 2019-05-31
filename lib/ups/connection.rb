@@ -52,10 +52,8 @@ module UPS
         yield rate_builder
       end
 
-      response = get_response_stream RATE_PATH, rate_builder.to_xml
-      UPS::Parsers::RatesParser.new.tap do |parser|
-        Ox.sax_parse(parser, response)
-      end
+      response = get_response(RATE_PATH, rate_builder.to_xml)
+      UPS::Parsers::RatesParser.new(response.body)
     end
 
     # Makes a request to ship a package
@@ -77,9 +75,8 @@ module UPS
       confirm_response = make_confirm_request(confirm_builder)
       return confirm_response unless confirm_response.success?
 
-      accept_builder = build_accept_request_from_confirm(confirm_builder,
-                                                         confirm_response)
-      make_accept_request accept_builder
+      accept_builder = build_accept_request_from_confirm(confirm_builder, confirm_response)
+      make_accept_request(accept_builder)
     end
 
     private
@@ -88,28 +85,21 @@ module UPS
       "#{url}#{path}"
     end
 
-    def get_response_stream(path, body)
-      response = Excon.post(build_url(path), body: body)
-      StringIO.new(response.body)
+    def get_response(path, body)
+      Excon.post(build_url(path), body: body)
     end
 
     def make_confirm_request(confirm_builder)
-      make_ship_request confirm_builder,
-                        SHIP_CONFIRM_PATH,
-                        Parsers::ShipConfirmParser.new
+      make_ship_request(confirm_builder, SHIP_CONFIRM_PATH, Parsers::ShipConfirmParser)
     end
 
     def make_accept_request(accept_builder)
-      make_ship_request accept_builder,
-                        SHIP_ACCEPT_PATH,
-                        Parsers::ShipAcceptParser.new
+      make_ship_request(accept_builder, SHIP_ACCEPT_PATH, Parsers::ShipAcceptParser)
     end
 
     def make_ship_request(builder, path, ship_parser)
-      response = get_response_stream path, builder.to_xml
-      ship_parser.tap do |parser|
-        Ox.sax_parse(parser, response)
-      end
+      response = get_response(path, builder.to_xml)
+      ship_parser.new(response.body)
     end
 
     def build_accept_request_from_confirm(confirm_builder, confirm_response)
