@@ -4,21 +4,20 @@ require 'tempfile'
 module UPS
   module Parsers
     class ShipAcceptParser < BaseParser
-
       def tracking_number
-        shipment_results[:ShipmentIdentificationNumber]
+        packages[0].tracking_number
       end
 
       def label_graphic_extension
-        ".#{package_results[:LabelImage][:LabelImageFormat][:Code].downcase}"
+        packages[0].label_graphic_extension
       end
 
       def label_graphic_image
-        base64_to_file(package_results[:LabelImage][:GraphicImage], label_graphic_extension)
+        packages[0].label_graphic_image
       end
 
       def label_html_image
-        base64_to_file(package_results[:LabelImage][:HTMLImage], label_graphic_extension)
+        packages[0].label_html_image
       end
 
       alias_method :graphic_extension, :label_graphic_extension
@@ -27,29 +26,30 @@ module UPS
 
       def form_graphic_extension
         return unless has_form_graphic?
-        ".#{shipment_results[:Form][:Image][:ImageFormat][:Code].downcase}"
+
+        ".#{form_graphic[:Image][:ImageFormat][:Code].downcase}"
       end
 
       def form_graphic_image
         return unless has_form_graphic?
-        base64_to_file(shipment_results[:Form][:Image][:GraphicImage], form_graphic_extension)
+
+        Utils.base64_to_file(form_graphic[:Image][:GraphicImage], form_graphic_extension)
+      end
+
+      def packages
+        return package_results.map { |package_result| UPS::Models::PackageResult.new(package_result) } if package_results.is_a?(Array)
+
+        [UPS::Models::PackageResult.new(package_results)]
       end
 
       private
 
-      def has_form_graphic?
-        shipment_results.key?(:Form)
+      def form_graphic
+        shipment_results[:Form]
       end
 
-      def base64_to_file(contents, extension)
-        file_config = ['ups', extension]
-        Tempfile.new(file_config, nil, encoding: 'ascii-8bit').tap do |file|
-          begin
-            file.write Base64.decode64(contents)
-          ensure
-            file.rewind
-          end
-        end
+      def has_form_graphic?
+        shipment_results.key?(:Form)
       end
 
       def package_results
