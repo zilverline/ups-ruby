@@ -41,6 +41,3 @@ DEPENDENCIES
   rake
   simplecov
   ups-ruby!
-
-BUNDLED WITH
-   1.17.3
