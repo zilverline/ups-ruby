@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ups-ruby (0.9.7)
+    ups-ruby (0.10.7)
       excon (~> 0.45, >= 0.45.3)
       insensitive_hash (~> 0.3.3)
       levenshtein-ffi (~> 1.1)
@@ -13,8 +13,8 @@ GEM
     codeclimate-test-reporter (1.0.5)
       simplecov
     docile (1.1.5)
-    excon (0.62.0)
-    ffi (1.10.0)
+    excon (0.64.0)
+    ffi (1.11.1)
     insensitive_hash (0.3.3)
     json (1.8.6)
     levenshtein-ffi (1.1.0)
@@ -23,7 +23,7 @@ GEM
     minitest (5.7.0)
     nokogiri (1.10.3)
       mini_portile2 (~> 2.4.0)
-    ox (2.10.0)
+    ox (2.10.1)
     rake (12.0.0)
     simplecov (0.10.0)
       docile (~> 1.1.0)
@@ -41,3 +41,6 @@ DEPENDENCIES
   rake
   simplecov
   ups-ruby!
+
+BUNDLED WITH
+   1.17.3
