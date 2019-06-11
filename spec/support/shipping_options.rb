@@ -39,6 +39,19 @@ module ShippingOptions
     }
   end
 
+  def large_package
+    {
+      weight: '1',
+      unit: 'KGS',
+      dimensions: {
+        length: 45.0,
+        width: 35.0,
+        height: 25.0,
+        unit: 'CM'
+      }
+    }
+  end
+
   def reference_number
     {
       code: 'IK',
