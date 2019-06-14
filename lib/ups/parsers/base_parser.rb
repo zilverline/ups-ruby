@@ -23,11 +23,23 @@ module UPS
       end
 
       def error_description
-        root_response[:Response][:Error][:ErrorDescription]
+        build_error_description(error_response)
       end
 
       def parsed_response
         @parsed_response ||= Ox.load(response, mode: :hash)
+      end
+
+      private
+
+      def build_error_description(errors_node)
+        return errors_node.last[:ErrorDescription] if errors_node.is_a?(Array)
+
+        errors_node[:ErrorDescription]
+      end
+
+      def error_response
+        root_response[:Response][:Error]
       end
     end
   end

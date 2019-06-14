@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<RatingServiceSelectionResponse>
+    <Response>
+        <ResponseStatusCode>0</ResponseStatusCode>
+        <ResponseStatusDescription>Failure</ResponseStatusDescription>
+        <Error>
+            <ErrorSeverity>Hard</ErrorSeverity>
+            <ErrorCode>111219</ErrorCode>
+            <ErrorDescription>The requested service is unavailable between the selected locations. Please check your Documents Only, Letter/Envelope, and Saturday Delivery settings as these may affect service availability.</ErrorDescription>
+        </Error>
+        <Error>
+            <ErrorSeverity>Hard</ErrorSeverity>
+            <ErrorCode>111031</ErrorCode>
+            <ErrorDescription>Packages must weigh more than zero kg.</ErrorDescription>
+        </Error>
+    </Response>
+</RatingServiceSelectionResponse>
