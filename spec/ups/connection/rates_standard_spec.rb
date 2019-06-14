@@ -68,6 +68,32 @@ describe UPS::Connection do
           }
         ]
       end
+
+      describe 'when API responds with a single rate' do
+        before do
+          Excon.stub(method: :post) do |params|
+            case params[:path]
+            when UPS::Connection::RATE_PATH
+              { body: File.read("#{stub_path}/rates_success_single_rate.xml"), status: 200 }
+            end
+          end
+        end
+
+        it 'returns rates' do
+          expect(subject.rated_shipments).wont_be_empty
+          expect(subject.rated_shipments).must_equal [
+            {
+              :service_code=>"11",
+              :service_name=>"UPS Standard",
+              :warnings=>[
+                "Your invoice may vary from the displayed reference rates",
+                "Ship To Address Classification is changed from Commercial to Residential"
+              ],
+              :total=>"25.03"
+            }
+          ]
+        end
+      end
     end
 
     describe 'error rates response' do

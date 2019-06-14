@@ -32,6 +32,10 @@ module UPS
 
       private
 
+      def normalize_response_into_array(response_node)
+        [response_node].flatten
+      end
+
       def build_error_description(errors_node)
         return errors_node.last[:ErrorDescription] if errors_node.is_a?(Array)
 

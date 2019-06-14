@@ -11,7 +11,7 @@ module UPS
       private
 
       def rates
-        root_response[:RatedShipment]
+        normalize_response_into_array(root_response[:RatedShipment])
       end
 
       def root_response
