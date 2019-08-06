@@ -38,6 +38,10 @@ module UPS
         element_with_value('CurrencyCode', opts[:currency_code])
       end
 
+      def freight_charges
+        element_with_value('FreightCharges', opts[:freight_charges])
+      end
+
       def product_details
         opts[:products].map do |product_opts|
           product_container(product_opts)
@@ -58,6 +62,7 @@ module UPS
           international_form << invoice_date
           international_form << reason_for_export
           international_form << currency_code
+          international_form << freight_charges if opts[:freight_charges]
 
           product_details.each do |product_detail|
             international_form << product_detail
