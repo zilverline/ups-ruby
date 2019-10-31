@@ -50,7 +50,7 @@ describe UPS::Connection do
           },
           {
             :service_code=>"65",
-            :service_name=>"UPS Saver",
+            :service_name=>"Express Saver",
             :warnings=>["Your invoice may vary from the displayed reference rates"],
             :total=>"45.82"
           },
