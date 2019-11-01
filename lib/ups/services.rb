@@ -11,7 +11,7 @@ module UPS
     '14' => 'Next Day Air Early AM',
     '54' => 'Express Plus',
     '59' => '2nd Day Air A.M.',
-    '65' => 'UPS Saver',
+    '65' => 'Express Saver',
     '82' => 'UPS Today Standard',
     '83' => 'UPS Today Dedicated Courier',
     '84' => 'UPS Today Intercity',
