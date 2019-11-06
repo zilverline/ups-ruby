@@ -65,6 +65,8 @@ module ShippingOptions
       invoice_date: '20170816',
       reason_for_export: '',
       currency_code: 'USD',
+      discount: '1',
+      freight_charge: '1',
       products: [
         {
           description: 'White coffee mug',
