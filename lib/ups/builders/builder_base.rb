@@ -175,6 +175,17 @@ module UPS
         end
       end
 
+      # Adds a Delivery Confirmation DCIS Type to the shipment service options
+      #
+      # @param [String] dcis_type DCIS type
+      # @return [void]
+      def add_shipment_delivery_confirmation(dcis_type)
+        shipment_service_options <<
+          Element.new('DeliveryConfirmation').tap do |delivery_confirmation|
+            delivery_confirmation << element_with_value('DCISType', dcis_type)
+          end
+      end
+
       # Returns a String representation of the XML document being built
       #
       # @return [String]
@@ -190,6 +201,14 @@ module UPS
         self.shipment_root = Element.new('Shipment')
         self.access_request = Element.new('AccessRequest')
         root << shipment_root
+      end
+
+      def shipment_service_options
+        @shipment_service_options ||= begin
+          Element.new('ShipmentServiceOptions').tap do |element|
+            shipment_root << element
+          end
+        end
       end
 
       def packaging_type
