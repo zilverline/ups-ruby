@@ -37,9 +37,8 @@ module UPS
       #
       # @return [void]
       def add_international_invoice(opts = {})
-        shipment_root << Element.new('ShipmentServiceOptions').tap do |shipment_service_options|
-          shipment_service_options << InternationalInvoiceBuilder.new('InternationalForms', opts).to_xml
-        end
+        shipment_service_options <<
+          InternationalInvoiceBuilder.new('InternationalForms', opts).to_xml
       end
 
       # Adds a Service section to the XML document being built
