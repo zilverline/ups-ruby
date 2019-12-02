@@ -51,6 +51,13 @@ module UPS
         element_with_value('AttentionName', opts[:attention_name][0..34])
       end
 
+      # Returns an XML representation of sender_vat_number of the company
+      #
+      # @return [Ox::Element] XML representation of sender_vat_number
+      def tax_identification_number
+        element_with_value('TaxIdentificationNumber', opts[:sender_vat_number] || '')
+      end
+
       # Returns an XML representation of address
       #
       # @return [Ox::Element] An instance of {AddressBuilder} containing the
@@ -68,6 +75,7 @@ module UPS
           org << phone_number
           org << attention_name
           org << address
+          org << tax_identification_number
         end
       end
     end
