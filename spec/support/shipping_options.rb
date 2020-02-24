@@ -29,6 +29,10 @@ module ShippingOptions
 
   def package
     {
+      packaging_type:{
+        code: '03',
+        description: 'Tube'
+      },
       weight: '0.5',
       unit: 'KGS',
       dimensions: {
@@ -42,6 +46,10 @@ module ShippingOptions
 
   def large_package
     {
+      packaging_type:{
+        code: '03',
+        description: 'Tube'
+      },
       weight: '1',
       unit: 'KGS',
       dimensions: {
