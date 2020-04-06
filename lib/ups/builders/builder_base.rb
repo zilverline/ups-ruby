@@ -151,16 +151,16 @@ module UPS
         end
       end
 
-      def dimensions_required? (opts = {})
-        return unless opts[:dimensions] && opts[:packaging_type]
-
-        return if opts[:packaging_type][:code] == '2'
-
-        true
-      end
-
       def customer_packaging
         {code: '02', description: 'Customer Supplied Package'}
+      end
+
+      def dimensions_required? (opts = {})
+        return unless opts[:dimensions]
+
+        return true unless opts[:packaging_type]
+
+        opts[:packaging_type][:code] == '02'
       end
 
       # Adds a PaymentInformation section to the XML document being built
