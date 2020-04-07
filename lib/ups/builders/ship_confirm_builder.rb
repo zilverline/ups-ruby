@@ -54,6 +54,10 @@ module UPS
                                           service_description)
       end
 
+      def add_invoice_line_total(value, currency_code)
+        shipment_root << invoice_line_total(value, currency_code)
+      end
+
       # Adds Description to XML document being built
       #
       # @param [String] description The description for goods being sent
@@ -106,6 +110,12 @@ module UPS
         multi_valued('ReferenceNumber',
                      'Code' => code.to_s,
                      'Value' => value.to_s)
+      end
+
+      def invoice_line_total(value, currency_code)
+        multi_valued('InvoiceLine',
+                     'CurrencyCode' => currency_code.to_s,
+                     'MonetaryValue' => value.to_s)
       end
     end
   end
