@@ -14,6 +14,7 @@ describe UPS::Connection do
 
   let(:stub_path) { File.expand_path("../../../stubs", __FILE__) }
   let(:server) { UPS::Connection.new(test_mode: true) }
+  let(:supplied_package) { package }
 
   describe 'if requesting rates' do
     subject do
@@ -22,7 +23,7 @@ describe UPS::Connection do
         rate_builder.add_shipper shipper
         rate_builder.add_ship_from shipper
         rate_builder.add_ship_to ship_to
-        rate_builder.add_package package
+        rate_builder.add_package supplied_package
       end
     end
 
@@ -93,6 +94,98 @@ describe UPS::Connection do
             }
           ]
         end
+      end
+    end
+
+    describe 'when ups packaging type is specified' do
+      let(:supplied_package) { package_with_carrier_packaging }
+
+      before do
+        Excon.stub(method: :post) do |params|
+          case params[:path]
+          when UPS::Connection::RATE_PATH
+            { body: File.read("#{stub_path}/rates_success_with_packaging_type.xml"), status: 200 }
+          end
+        end
+      end
+
+      it 'returns rates' do
+        expect(subject.rated_shipments).wont_be_empty
+          expect(subject.rated_shipments).must_equal [
+            {
+              service_code: '07',
+              service_name: 'Express',
+              warnings: [
+                ' The weight exceeds the limit for the UPS Letter/Envelope rate and will be rated using the weight. ',
+                ' Your invoice may vary from the displayed reference rates '
+              ],
+              total: '171.04'
+            },
+            {
+              service_code: '65',
+              service_name: 'Express Saver',
+              warnings: [
+                ' The weight exceeds the limit for the UPS Letter/Envelope rate and will be rated using the weight. ',
+                ' Your invoice may vary from the displayed reference rates '
+              ],
+              total: '160.76'
+            },
+            {
+              service_code: '54',
+              service_name: 'Express Plus',
+              warnings: [
+                ' The weight exceeds the limit for the UPS Letter/Envelope rate and will be rated using the weight. ',
+                ' Your invoice may vary from the displayed reference rates '
+              ],
+              total: '226.89'
+            }
+          ]
+      end
+    end
+
+    describe 'when both ups packaging type and dimensions are specified' do
+      let(:supplied_package) { package_with_carrier_packaging }
+
+      before do
+        Excon.stub(method: :post) do |params|
+          case params[:path]
+          when UPS::Connection::RATE_PATH
+            { body: File.read("#{stub_path}/rates_success_with_packaging_type_and_dimensions.xml"), status: 200 }
+          end
+        end
+      end
+
+      it 'returns rates' do
+        expect(subject.rated_shipments).wont_be_empty
+          expect(subject.rated_shipments).must_equal [
+            {
+              service_code: '07',
+              service_name: 'Express',
+              warnings: [
+                ' The weight exceeds the limit for the UPS Letter/Envelope rate and will be rated using the weight. ',
+                ' Your invoice may vary from the displayed reference rates '
+              ],
+              total: '170.27'
+            },
+            {
+              service_code: '65',
+              service_name: 'Express Saver',
+              warnings: [
+                ' The weight exceeds the limit for the UPS Letter/Envelope rate and will be rated using the weight. ',
+                ' Your invoice may vary from the displayed reference rates '
+              ],
+              total: '160.76'
+            },
+            {
+              service_code: '54',
+              service_name: 'Express Plus',
+              warnings: [
+                ' The weight exceeds the limit for the UPS Letter/Envelope rate and will be rated using the weight. ',
+                ' Your invoice may vary from the displayed reference rates '
+              ],
+              total: '226.89'
+            }
+          ]
       end
     end
 

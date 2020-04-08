@@ -144,23 +144,15 @@ module UPS
       # @return [void]
       def add_package(opts = {})
         shipment_root << Element.new('Package').tap do |org|
-          org << packaging_type(opts[:packaging_type] || customer_packaging)
+          org << packaging_type(opts[:packaging_type] || customer_supplied_packaging)
           org << element_with_value('Description', 'Rate')
           org << package_weight(opts[:weight], opts[:unit])
-          org << package_dimensions(opts[:dimensions]) if dimensions_required?(opts)
+          org << package_dimensions(opts[:dimensions]) if opts[:dimensions]
         end
       end
 
-      def customer_packaging
+      def customer_supplied_packaging
         {code: '02', description: 'Customer Supplied Package'}
-      end
-
-      def dimensions_required? (opts = {})
-        return unless opts[:dimensions]
-
-        return true unless opts[:packaging_type]
-
-        opts[:packaging_type][:code] == '02'
       end
 
       # Adds a PaymentInformation section to the XML document being built
@@ -230,10 +222,9 @@ module UPS
         end
       end
 
-      def packaging_type(packaging_type)
-        code_description 'PackagingType', packaging_type[:code], packaging_type[:description]
+      def packaging_type(packaging_options_hash)
+        code_description 'PackagingType', packaging_options_hash[:code], packaging_options_hash[:description]
       end
-
 
       def package_weight(weight, unit)
         Element.new('PackageWeight').tap do |org|
