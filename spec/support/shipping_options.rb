@@ -53,6 +53,34 @@ module ShippingOptions
     }
   end
 
+  def package_with_carrier_packaging
+    {
+      weight: '1',
+      unit: 'KGS',
+      packaging_type:{
+        code: '01',
+        description: 'Tube'
+      }
+    }
+  end
+
+  def package_with_carrier_packaging_and_dimensions
+    {
+      weight: '1',
+      unit: 'KGS',
+      dimensions: {
+        length: 40,
+        width: 30,
+        height: 20,
+        unit: 'CM'
+      },
+      packaging_type:{
+        code: '01',
+        description: 'Tube'
+      }
+    }
+  end
+
   def reference_number
     {
       code: 'IK',

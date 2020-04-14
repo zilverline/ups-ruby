@@ -82,6 +82,41 @@ describe UPS::Connection do
       end
     end
 
+    describe 'when packaging type is specified' do
+      before do
+        Excon.stub(method: :post) do |params|
+          case params[:path]
+          when UPS::Connection::SHIP_CONFIRM_PATH
+            {
+              body: File.read("#{stub_path}/ship_confirm_success_with_packaging_type.xml"), status: 200
+            }
+          when UPS::Connection::SHIP_ACCEPT_PATH
+            {
+              body: File.read("#{stub_path}/ship_accept_success_with_packaging_type.xml"), status: 200
+            }
+          end
+        end
+      end
+
+      subject do
+        server.ship do |shipment_builder|
+          shipment_builder.add_access_request ENV['UPS_LICENSE_NUMBER'], ENV['UPS_USER_ID'], ENV['UPS_PASSWORD']
+          shipment_builder.add_shipper shipper
+          shipment_builder.add_ship_from shipper
+          shipment_builder.add_ship_to ship_to
+          shipment_builder.add_package package_with_carrier_packaging_and_dimensions
+          shipment_builder.add_payment_information ENV['UPS_ACCOUNT_NUMBER']
+          shipment_builder.add_service '07'
+        end
+      end
+
+      let(:supplied_package) { package_with_carrier_packaging }
+
+      it 'should return the tracking number' do
+        subject.tracking_number.must_equal '1Z2R466A6790676189'
+      end
+    end
+
     describe 'multi package shipment' do
       before do
         Excon.stub(method: :post) do |params|
