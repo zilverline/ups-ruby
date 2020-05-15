@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ups-ruby (0.16.0)
+    ups-ruby (0.17.0)
       excon (~> 0.45, >= 0.45.3)
       insensitive_hash (~> 0.3.3)
       levenshtein-ffi (~> 1.1)
@@ -41,3 +41,6 @@ DEPENDENCIES
   rake
   simplecov
   ups-ruby!
+
+BUNDLED WITH
+   1.17.3
