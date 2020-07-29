@@ -42,6 +42,10 @@ module UPS
         [UPS::Models::PackageResult.new(package_results)]
       end
 
+      def master_carton_id
+        shipment_results[:MasterCartonID]
+      end
+
       private
 
       def form_graphic
