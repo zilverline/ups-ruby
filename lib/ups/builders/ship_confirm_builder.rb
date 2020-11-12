@@ -67,6 +67,15 @@ module UPS
         shipment_root << element_with_value('Description', description)
       end
 
+      # Adds ReturnService to XML document being built
+      #
+      # @param [String] return_service The Return Service type
+      #
+      # @return [void]
+      def add_return_service(return_service)
+        shipment_root << element_with_value('ReturnService', return_service)
+      end
+
       # Adds ReferenceNumber to the XML document being built
       #
       # @param [Hash] opts A Hash of data to build the requested section
