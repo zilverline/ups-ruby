@@ -69,13 +69,13 @@ module UPS
 
       # Adds ReturnService to XML document being built
       #
-      # @param [String] return_service The Return Service type
+      # @param [String] service_code The code for Return Service type
       #
       # @return [void]
-      def add_return_service(service_code, service_description = '')
-        shipment_root << code_description('ReturnService',
-                                          service_code,
-                                          service_description)
+      def add_return_service(service_code)
+        shipment_root << Element.new('ReturnService').tap do |return_service|
+          return_service << element_with_value('Code', service_code.to_s)
+        end
       end
 
       # Adds ReferenceNumber to the XML document being built
