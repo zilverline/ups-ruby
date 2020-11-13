@@ -72,8 +72,10 @@ module UPS
       # @param [String] return_service The Return Service type
       #
       # @return [void]
-      def add_return_service(return_service)
-        shipment_root << element_with_value('ReturnService', return_service)
+      def add_return_service(service_code, service_description = '')
+        shipment_root << code_description('ReturnService',
+                                          service_code,
+                                          service_description)
       end
 
       # Adds ReferenceNumber to the XML document being built
