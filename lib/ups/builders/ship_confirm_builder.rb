@@ -78,6 +78,15 @@ module UPS
         end
       end
 
+      # Adds USPSEndorsement to XML document being built
+      #
+      # @param [String] service_code The code for Return Service type
+      #
+      # @return [void]
+      def add_usps_endorsement(endorsement_code)
+        shipment_root << element_with_value('USPSEndorsement', endorsement_code.to_s)
+      end
+
       # Adds ReferenceNumber to the XML document being built
       #
       # @param [Hash] opts A Hash of data to build the requested section
