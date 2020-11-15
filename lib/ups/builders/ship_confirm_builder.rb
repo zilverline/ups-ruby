@@ -80,11 +80,20 @@ module UPS
 
       # Adds USPSEndorsement to XML document being built
       #
-      # @param [String] service_code The code for Return Service type
+      # @param [String] endorsement_code The code for endorement type
       #
       # @return [void]
       def add_usps_endorsement(endorsement_code)
         shipment_root << element_with_value('USPSEndorsement', endorsement_code.to_s)
+      end
+
+      # Adds PackageID to XML document being built
+      #
+      # @param [String] package_id Customer-assigned unique piece identifier that returns visibility events
+      #
+      # @return [void]
+      def add_package_id(package_id)
+        shipment_root << element_with_value('PackageID', package_id.to_s)
       end
 
       # Adds ReferenceNumber to the XML document being built
