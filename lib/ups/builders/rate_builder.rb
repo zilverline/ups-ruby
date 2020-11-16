@@ -27,7 +27,6 @@ module UPS
           shipment_service_options << code_description('ReturnService',
                                             service_code,
                                             service_description)
-        end
       end
     end
   end
