@@ -16,6 +16,19 @@ module UPS
 
         add_request('Rate', 'Shop')
       end
+
+
+      # Adds ReturnService to XML document being built
+      #
+      # @param [String] service_code The code for Return Service type
+      #
+      # @return [void]
+      def add_return_service(service_code, service_description = '')
+          shipment_service_options << code_description('ReturnService',
+                                            service_code,
+                                            service_description)
+        end
+      end
     end
   end
 end
