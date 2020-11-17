@@ -41,5 +41,6 @@ module UPS
     autoload :OrganisationBuilder,                'ups/builders/organisation_builder'
     autoload :ShipperBuilder,                     'ups/builders/shipper_builder'
     autoload :TrackBuilder,                       'ups/builders/track_builder'
+    autoload :LabelRecoveryRequestBuilder,        'ups/builders/label_recovery_request_builder'
   end
 end
