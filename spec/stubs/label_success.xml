@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<LabelRecoveryResponse>
+  <Response>
+    <TransactionReference>
+      <CustomerContext>Your Customer Context</CustomerContext>
+    </TransactionReference>
+    <ResponseStatusCode>1</ResponseStatusCode>
+    <ResponseStatusDescription>Success</ResponseStatusDescription>
+  </Response>
+  <ShipmentIdentificationNumber>1Z1107YY8567985294</ShipmentIdentificationNumber>
+  <LabelResults>
+    <TrackingNumber>1Z1107YY8567985294</TrackingNumber>
+    <LabelImage>
+      <LabelImageFormat>
+        <Code>GIF</Code>
+      </LabelImageFormat>
+      <GraphicImage>R0lGODdheAUgA+cAAAAAAAEBAQICAgMDAwQEBAUFBQYGBg(Truncated)</GraphicImage>
+      <HTMLImage>PCFET0NUWVBFIEhUTUwgUFVCTElDICItLy9JRVRGLy9EVEQgSF(Truncated)</HTMLImage>
+      <PDF417>R0lGODdhLAG8AucAAAAAAAEBAQICAgMDAwQEBAUFBQYGBgcHBwgICA(Truncated )</PDF417>
+      <URL>https://www.ups.com/u.a/L.class?8RY86r2n6CmK%2B53TmeX42gtY6%2BsAMRcrqsP0M8</ URL>
+    </LabelImage>
+    <Receipt>
+      <HTMLImage>PGh0bWw+PGhlYWQ+PHRpdGxlPlJlY2VpcHQ8L3RpdGxlPjwvaGVhZ(Truncated)</ HTMLImage>
+      <URL>https://www.ups.com/u.a/L.class?8RY86r2n6CmK%2B53TmeX42gtY6%2BsAMRcrqsPBMi</ URL>
+    </Receipt>
+  </LabelResults>
+  <LabelResults>
+    <TrackingNumber>1Z1107YY8586551109</TrackingNumber>
+    <LabelImage>
+      <LabelImageFormat>
+        <Code>GIF</Code>
+      </LabelImageFormat>
+      <GraphicImage>R0lGODdheAUgA+cAAAAAAAEBAQICAgMDAwQEBAUFBQYGBg(Truncated)</GraphicImage>
+      <HTMLImage>PCFET0NUWVBFIEhUTUwgUFVCTElDICItLy9JRVRGLy9EVEQg(Truncated)</HTMLImage>
+      <PDF417>R0lGODdhLAG8AucAAAAAAAEBAQICAgMDAwQEBAUFBQYGBgcHBwgICA(Truncated )</PDF417>
+    </LabelImage>
+    <Receipt>
+      <HTMLImage>PGh0bWw+PGhlYWQ+PHRpdGxlPlJlY2VpcHQ8L3RpdGxlPjwvaGVhZ(Truncated)</ HTMLImage>
+    </Receipt>
+  </LabelResults>
+</LabelRecoveryResponse>

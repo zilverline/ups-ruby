@@ -12,7 +12,6 @@ class UPS::Builders::TestLabelRecoveryRequestBuilder < Minitest::Test
   end
 
   def test_validates_against_xsd
-    pp @label_recovery_request_builder.to_xml
     assert_passes_validation schema_path('LabelRecoveryRequest.xsd'), @label_recovery_request_builder.to_xml
   end
 end
