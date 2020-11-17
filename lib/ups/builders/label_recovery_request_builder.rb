@@ -17,6 +17,18 @@ module UPS
         root << multi_valued('Request', RequestAction: 'LabelRecovery')
       end
 
+      # Adds a LabelImageFormat to the XML document being built
+      # according to user inputs
+      # @param [String] image_format_code Customer supplied image format.
+      # @return [void]
+      def add_label_specification(image_format_code)
+        root << Element.new('LabelSpecification').tap do |label_spec|
+          label_spec << Element.new('LabelImageFormat').tap do |label_image_format|
+            label_image_format << element_with_value('Code', image_format_code)
+          end
+        end
+      end
+
       # Adds a TrackingNumber to the XML document being built
       # according to user inputs
       #

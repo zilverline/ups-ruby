@@ -18,6 +18,7 @@ describe UPS::Connection do
       server.label do |label_builder|
         label_builder.add_access_request ENV['UPS_LICENSE_NUMBER'], ENV['UPS_USER_ID'], ENV['UPS_PASSWORD']
         label_builder.add_tracking_number '1Z1107YY8567985294'
+        label_builder.add_label_specification 'GIF'
       end
     end
 
