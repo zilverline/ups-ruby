@@ -22,6 +22,7 @@ module UPS
     SHIP_ACCEPT_PATH = '/ups.app/xml/ShipAccept'
     ADDRESS_PATH = '/ups.app/xml/XAV'
     TRACK_PATH = '/ups.app/xml/Track'
+    LABEL_PATH = '/ups.app/xml/LabelRecovery'
 
     DEFAULT_PARAMS = {
       test_mode: false
@@ -99,6 +100,27 @@ module UPS
       response = get_response(TRACK_PATH, track_builder.to_xml)
 
       UPS::Parsers::TrackParser.new(response.body)
+    end
+
+    # Makes a request for a label of a shipment.
+    #
+    # A pre-configured {Builders::LabelRecoveryRequestBuilder} object can be passed as the first
+    # option or a block yielded to configure a new {Builders::LabelRecoveryRequestBuilder}
+    # object.
+    #
+    # @param [Builders::LabelRecoveryRequestBuilder] track_builder A pre-configured
+    #   {Builders::LabelRecoveryRequestBuilder} object to use
+    # @yield [track_builder] A LabelRecoveryRequestBuilder object for configuring
+    #   the label request information sent
+    def label(label_builder = nil)
+      if label_builder.nil? && block_given?
+        label_builder = UPS::Builders::LabelRecoveryRequestBuilder.new
+        yield label_builder
+      end
+
+      response = get_response(LABEL_PATH, label_builder.to_xml)
+
+      UPS::Parsers::LabelParser.new(response.body)
     end
 
     private

@@ -28,6 +28,7 @@ module UPS
     autoload :ShipConfirmParser,   'ups/parsers/ship_confirm_parser'
     autoload :ShipAcceptParser,    'ups/parsers/ship_accept_parser'
     autoload :TrackParser,         'ups/parsers/track_parser'
+    autoload :LabelParser,         'ups/parsers/label_parser'
   end
 
   module Builders
