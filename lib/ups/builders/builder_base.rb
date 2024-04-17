@@ -1,6 +1,4 @@
 require 'ox'
-require 'excon'
-require 'base64'
 
 module UPS
   module Builders
@@ -38,114 +36,7 @@ module UPS
         document << access_request
         document << root
 
-        @token_data = nil
-
         yield self if block_given?
-      end
-
-      # Creates a new access token
-      #
-      # @param [String] base_url The base URL to use for the token creation request
-      # @param [String] account_number Account number to use for the request
-      # @param [String] client_id Client ID to use
-      # @param [String] client_secret Client secret to use
-      # @return [void]
-      def create_token(base_url, account_number, client_id, client_secret)
-        full_url = base_url + '/security/v1/oauth/token'
-        auth = 'Basic ' + Base64.strict_encode64("#{client_id}:#{client_secret}")
-
-        params = {
-          'grant_type' => 'client_credentials'
-        }
-
-        begin
-          response = Excon.post(
-            full_url,
-            body: URI.encode_www_form(params),
-            headers: {
-              'Content-Type' => 'application/x-www-form-urlencoded',
-              'x-merchant-id' => account_number,
-              'Authorization' => auth
-            }
-          )
-
-          if response.status == 200
-            @token_data = JSON.parse(response.body)
-          else
-            raise "Unexpected response status: #{response.status}"
-          end
-
-        rescue Excon::Errors::Timeout
-          fail AuthorizationError, 'Token creation request timed out'
-        rescue Excon::Errors::SocketError
-          fail AuthorizationError, 'Token creation request failed due to socket error'
-        rescue => e
-          fail AuthorizationError, "Token creation request failed: #{e.message}"
-        end
-      end
-
-      # Refreshes the access token once it has expired
-      #
-      # @param [String] base_url The base URL to use for the token refresh request
-      # @param [String] client_id Client ID to use
-      # @param [String] client_secret Client secret to use
-      # @param [String] refresh_token Refresh token to use for the request
-      # @return [void]
-      def refresh_token(base_url, client_id, client_secret, refresh_token)
-        full_url = base_url + '/security/v1/oauth/refresh'
-        auth = 'Basic ' + Base64.strict_encode64("#{client_id}:#{client_secret}")
-
-        params = {
-          'grant_type' => 'refresh_token',
-          'refresh_token' => refresh_token
-        }
-
-        begin
-          response = Excon.post(
-            full_url,
-            body: URI.encode_www_form(params),
-            headers: {
-              'Content-Type' => 'application/x-www-form-urlencoded',
-              'Authorization' => auth
-            }
-          )
-
-          if response.status == 200
-            @token_data = JSON.parse(response.body)
-          else
-            raise "Unexpected response status: #{response.status}"
-          end
-
-        rescue Excon::Errors::Timeout
-          fail AuthorizationError, 'Token refresh request timed out'
-        rescue Excon::Errors::SocketError
-          fail AuthorizationError, 'Token refresh request failed due to socket error'
-        rescue => e
-          fail AuthorizationError, "Token refresh request failed: #{e.message}"
-        end
-      end
-
-      # Retrieves the access token, or refreshes it if it has expired
-      #
-      # @param [String] base_url The base URL to use for if the token needs to be refreshed
-      # @param [String] client_id Client ID to use
-      # @param [String] client_secret Client secret to use
-      # @return [String] The access token
-      def get_access_token(base_url, client_id, client_secret)
-        if @token_data.nil?
-          fail AuthorizationError, 'No token data found, please call create_token first'
-        end
-
-        issued_at = @token_data['issued_at'].to_i
-        expires_in = @token_data['expires_in'].to_i
-        current_time = Time.now.to_i
-
-        # Token is expired, refresh it
-        if issued_at + expires_in <= current_time
-          refresh_token(base_url, client_id, client_secret, @token_data['refresh_token'])
-        end
-
-        @token_data['access_token']
       end
 
       # Initializes a new {BuilderBase} object
