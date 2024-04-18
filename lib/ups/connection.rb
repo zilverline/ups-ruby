@@ -114,7 +114,15 @@ module UPS
     end
 
     def get_response(path, body)
-      Excon.post(build_url(path), body: body)
+      access_token = get_access_token()
+
+      Excon.post(
+        build_url(path),
+        body: body,
+        headers: {
+          'Authorization' => "Bearer #{access_token}"
+        }
+      )
     end
 
     def make_confirm_request(confirm_builder)
@@ -168,11 +176,11 @@ module UPS
         end
 
       rescue Excon::Errors::Timeout
-        fail AuthorizationError, 'Token creation request timed out'
+        fail Exceptions::AuthorizationError, 'Token creation request timed out'
       rescue Excon::Errors::SocketError
-        fail AuthorizationError, 'Token creation request failed due to socket error'
+        fail Exceptions::AuthorizationError, 'Token creation request failed due to socket error'
       rescue => e
-        fail AuthorizationError, "Token creation request failed: #{e.message}"
+        fail Exceptions::AuthorizationError, "Token creation request failed: #{e.message}"
       end
     end
 
@@ -206,11 +214,11 @@ module UPS
         end
 
       rescue Excon::Errors::Timeout
-        fail AuthorizationError, 'Token refresh request timed out'
+        fail Exceptions::AuthorizationError, 'Token refresh request timed out'
       rescue Excon::Errors::SocketError
-        fail AuthorizationError, 'Token refresh request failed due to socket error'
+        fail Exceptions::AuthorizationError, 'Token refresh request failed due to socket error'
       rescue => e
-        fail AuthorizationError, "Token refresh request failed: #{e.message}"
+        fail Exceptions::AuthorizationError, "Token refresh request failed: #{e.message}"
       end
     end
 
@@ -219,7 +227,7 @@ module UPS
     # @return [String] The access token
     def get_access_token()
       if @token_data.nil?
-        fail AuthorizationError, 'No token data found, please call create_token first'
+        fail Exceptions::AuthorizationError, 'No token data found, please call authorize first'
       end
 
       issued_at = @token_data['issued_at'].to_i
@@ -241,6 +249,11 @@ module UPS
     # @param [String] client_secret Client secret to use
     # @return [void]
     def authorize(account_number, client_id, client_secret)
+      # Make sure we were given credentials for OAuth
+      if params[:account_number].blank? || params[:client_id].blank? || params[:client_secret].blank?
+        fail Exceptions::AuthorizationError, 'Missing account_number, client_id, or client_secret'
+      end
+
       self.account_number = account_number
       self.client_id = client_id
       self.client_secret = client_secret
