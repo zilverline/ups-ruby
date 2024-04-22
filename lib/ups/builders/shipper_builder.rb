@@ -1,5 +1,3 @@
-require 'ox'
-
 module UPS
   module Builders
     # The {ShipperBuilder} class builds UPS XML Organization Objects.
@@ -9,8 +7,6 @@ module UPS
     # @attr [String] name The Containing XML Element Name
     # @attr [Hash] opts The Shipper and Address Parts
     class ShipperBuilder < BuilderBase
-      include Ox
-
       attr_accessor :name, :opts
 
       # Initializes a new {ShipperBuilder} object
@@ -28,68 +24,72 @@ module UPS
         self.opts = opts
       end
 
-      # Returns an XML representation of shipper_name
+      # Returns JSON representation of shipper name
       #
-      # @return [Ox::Element] XML representation of shipper_name
+      # @return [Hash] JSON representation for shipper name
       def shipper_name
-        element_with_value('Name', opts[:company_name])
+        element_with_value('Name', opts[:company_name][0..34])
       end
 
-      # Returns an XML representation of company_name
+      # Returns JSON representation of shipper phone number
       #
-      # @return [Ox::Element] XML representation of company_name
-      def company_name
-        element_with_value('CompanyName', opts[:company_name])
-      end
-
-      # Returns an XML representation of company_name
-      #
-      # @return [Ox::Element] XML representation of phone_number
+      # @return [Hash] JSON representation of shipper phone number
       def phone_number
-        element_with_value('PhoneNumber', opts[:phone_number])
+        multi_valued('Phone', 'Number' => opts[:phone_number][0..14])
       end
 
-      # Returns an XML representation of company_name
+      # Returns JSON representation of shipper account number
       #
-      # @return [Ox::Element] XML representation of shipper_number
+      # @return [Hash] JSON representation of shipper account number
       def shipper_number
         element_with_value('ShipperNumber', opts[:shipper_number] || '')
       end
 
-      # Returns an XML representation of the associated Address
+      # Returns JSON representation of shipper address
       #
-      # @return [Ox::Element] XML object of the associated Address
+      # @return [Hash] JSON representation of shipper address
       def address
-        AddressBuilder.new(opts).to_xml
+        AddressBuilder.new(opts).as_json
       end
 
-      # Returns an XML representation of attention_name
+      # Returns JSON representation of shipper attention name
       #
-      # @return [Ox::Element] XML representation of attention_name
+      # @return [Hash] JSON representation of shipper attention name
       def attention_name
         element_with_value('AttentionName', opts[:attention_name] || '')
       end
 
-      # Returns an XML representation of sender_vat_number
+      # Returns JSON representation of shipper tax identification number
       #
-      # @return [Ox::Element] XML representation of sender_vat_number
+      # @return [Hash] JSON representation of shipper tax identification number
       def tax_identification_number
-        element_with_value('TaxIdentificationNumber', opts[:sender_vat_number] || '')
+        element_with_value('TaxIdentificationNumber', opts[:sender_tax_number] || '')
       end
 
-      # Returns an XML representation of the current object
+      # Returns JSON representation of email address
       #
-      # @return [Ox::Element] XML representation of the current object
-      def to_xml
-        Element.new('Shipper').tap do |org|
-          org << shipper_name
-          org << attention_name
-          org << company_name
-          org << phone_number
-          org << shipper_number
-          org << address
-          org << tax_identification_number
+      # @return [Hash] JSON representation of email address
+      def email_address
+        element_with_value('EMailAddress', opts[:email_address][0..49])
+      end
+
+      # Returns JSON representation of the shipper object
+      #
+      # @return [Hash] JSON representation of the shipper object
+      def as_json
+        sh = element_with_value('Shipper', {})
+        sh['Shipper'].merge!(shipper_name,
+                             phone_number,
+                             shipper_number,
+                             address,
+                             attention_name,
+                             tax_identification_number)
+
+        if opts[:email_address]
+          sh['Shipper'].merge!(email_address)
         end
+
+        sh
       end
     end
   end

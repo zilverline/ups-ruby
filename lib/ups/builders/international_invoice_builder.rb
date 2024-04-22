@@ -1,16 +1,12 @@
-require 'ox'
-
 module UPS
   module Builders
-    # The {InternationalInvoiceBuilder} class builds UPS XML International invoice Objects.
+    # The {InternationalInvoiceBuilder} class builds UPS JSON International invoice Objects.
     #
     # @author Calvin Hughes
     # @since 0.9.3
     # @attr [String] name The Containing XML Element Name
     # @attr [Hash] opts The international invoice parts
     class InternationalInvoiceBuilder < BuilderBase
-      include Ox
-
       attr_accessor :name, :opts
 
       def initialize(name, opts = {})
@@ -23,31 +19,31 @@ module UPS
       end
 
       def invoice_number
-        element_with_value('InvoiceNumber', opts[:invoice_number])
+        element_with_value('InvoiceNumber', opts[:invoice_number][0..34])
       end
 
       def invoice_date
-        element_with_value('InvoiceDate', opts[:invoice_date])
+        element_with_value('InvoiceDate', opts[:invoice_date][0..7])
       end
 
       def terms_of_shipment
-        element_with_value('TermsOfShipment', opts[:terms_of_shipment])
+        element_with_value('TermsOfShipment', opts[:terms_of_shipment][0..2])
       end
 
       def reason_for_export
-        element_with_value('ReasonForExport', opts[:reason_for_export])
+        element_with_value('ReasonForExport', opts[:reason_for_export][0..19])
       end
 
       def currency_code
-        element_with_value('CurrencyCode', opts[:currency_code])
+        element_with_value('CurrencyCode', opts[:currency_code][0..2])
       end
 
       def freight_charge
-        multi_valued('FreightCharges', MonetaryValue: opts[:freight_charge])
+        multi_valued('FreightCharges', 'MonetaryValue' => opts[:freight_charge].to_s)
       end
 
       def discount
-        multi_valued('Discount', MonetaryValue: opts[:discount])
+        multi_valued('Discount', 'MonetaryValue' => opts[:discount].to_s)
       end
 
       def product_details
@@ -57,27 +53,30 @@ module UPS
       end
 
       def product_container(opts = {})
-        InternationalInvoiceProductBuilder.new('Product', opts).to_xml
+        InternationalInvoiceProductBuilder.new(opts).as_json
       end
 
-      # Returns an XML representation of the current object
+      # Returns a JSON representation of the current object
       #
-      # @return [Ox::Element] XML representation of the current object
-      def to_xml
-        Element.new(name).tap do |international_form|
-          international_form << form_type
-          international_form << invoice_number if opts[:invoice_number]
-          international_form << invoice_date
-          international_form << terms_of_shipment if opts[:terms_of_shipment]
-          international_form << reason_for_export
-          international_form << currency_code
-          international_form << freight_charge
-          international_form << discount
+      # @return [Hash] JSON representation of the current object
+      def as_json
+        international_form = element_with_value(name, {})
+        international_form[name].merge!(form_type,
+                                        invoice_date,
+                                        reason_for_export,
+                                        currency_code,
+                                        freight_charge,
+                                        discount)
 
-          product_details.each do |product_detail|
-            international_form << product_detail
-          end
+        if opts[:invoice_number]
+          international_form[name].merge!(invoice_number)
         end
+        if opts[:terms_of_shipment]
+          international_form[name].merge!(terms_of_shipment)
+        end
+
+        international_form[name]['Product'] = product_details
+        international_form
       end
     end
   end

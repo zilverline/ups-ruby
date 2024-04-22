@@ -15,7 +15,7 @@ describe UPS::Builders::AddressBuilder do
       subject { UPS::Builders::AddressBuilder.new address_hash }
 
       it "should change the state to be the abbreviated state name" do
-        subject.opts[:state].must_equal 'CA'
+        expect(subject.opts[:state]).must_equal 'CA'
       end
     end
 
@@ -23,7 +23,7 @@ describe UPS::Builders::AddressBuilder do
       subject { UPS::Builders::AddressBuilder.new address_hash.merge({ state: 'CaLiFoRnIa' }) }
 
       it "should change the state to be the abbreviated state name" do
-        subject.opts[:state].must_equal 'CA'
+        expect(subject.opts[:state]).must_equal 'CA'
       end
     end
 
@@ -31,7 +31,7 @@ describe UPS::Builders::AddressBuilder do
       subject { UPS::Builders::AddressBuilder.new address_hash.merge({ state: 'ca' }) }
 
       it "should retrun the abbreviated state" do
-        subject.opts[:state].must_equal 'CA'
+        expect(subject.opts[:state]).must_equal 'CA'
       end
     end
   end
@@ -49,7 +49,7 @@ describe UPS::Builders::AddressBuilder do
       subject { UPS::Builders::AddressBuilder.new address_hash }
 
       it "should change the state to be the abbreviated state name" do
-        subject.opts[:state].must_equal 'QC'
+        expect(subject.opts[:state]).must_equal 'QC'
       end
     end
 
@@ -57,7 +57,7 @@ describe UPS::Builders::AddressBuilder do
       subject { UPS::Builders::AddressBuilder.new address_hash.merge({ state: 'QuEbEc' }) }
 
       it "should change the state to be the abbreviated state name" do
-        subject.opts[:state].must_equal 'QC'
+        expect(subject.opts[:state]).must_equal 'QC'
       end
     end
 
@@ -65,7 +65,7 @@ describe UPS::Builders::AddressBuilder do
       subject { UPS::Builders::AddressBuilder.new address_hash.merge({ state: 'qc' }) }
 
       it "should retrun the abbreviated state" do
-        subject.opts[:state].must_equal 'QC'
+        expect(subject.opts[:state]).must_equal 'QC'
       end
     end
   end
@@ -83,14 +83,16 @@ describe UPS::Builders::AddressBuilder do
       subject { UPS::Builders::AddressBuilder.new address_hash }
 
       it "should change the state to be the abbreviated state name" do
-        subject.opts[:state].must_equal 'Dublin'
+        expect(subject.opts[:state]).must_equal 'Dublin'
       end
     end
 
     describe "when passed a empty state" do
       subject { UPS::Builders::AddressBuilder.new address_hash.merge({ state: '' }) }
       it "should throw an exception" do
-        proc { subject }.must_raise UPS::Exceptions::InvalidAttributeError
+        assert_raises UPS::Exceptions::InvalidAttributeError do
+          subject
+        end
       end
     end
 
@@ -101,7 +103,7 @@ describe UPS::Builders::AddressBuilder do
         subject { UPS::Builders::AddressBuilder.new address_hash }
 
         it "changes the state to a single blank character" do
-          subject.opts[:state].must_equal '_'
+          expect(subject.opts[:state]).must_equal '_'
         end
       end
 
@@ -109,7 +111,7 @@ describe UPS::Builders::AddressBuilder do
         subject { UPS::Builders::AddressBuilder.new address_hash.merge({ state: '' }) }
 
         it "does not throw an exception" do
-          subject.opts[:state].must_equal '_'
+          expect(subject.opts[:state]).must_equal '_'
         end
       end
     end

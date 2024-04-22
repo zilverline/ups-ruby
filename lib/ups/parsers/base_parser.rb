@@ -1,5 +1,6 @@
 require 'uri'
 require 'ox'
+require 'json'
 
 module UPS
   module Parsers
@@ -27,7 +28,7 @@ module UPS
       end
 
       def parsed_response
-        @parsed_response ||= Ox.load(response, mode: :hash)
+        @parsed_response ||= JSON.parse(response, symbolize_names: true)
       end
 
       private

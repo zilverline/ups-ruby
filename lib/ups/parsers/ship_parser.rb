@@ -3,7 +3,7 @@ require 'tempfile'
 
 module UPS
   module Parsers
-    class ShipAcceptParser < BaseParser
+    class ShipParser < BaseParser
       def tracking_number
         packages[0].tracking_number
       end
@@ -61,7 +61,7 @@ module UPS
       end
 
       def root_response
-        parsed_response[:ShipmentAcceptResponse]
+        parsed_response[:ShipmentResponse]
       end
     end
   end

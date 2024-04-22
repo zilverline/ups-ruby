@@ -1,20 +1,14 @@
-require 'ox'
-
 module UPS
   module Builders
     # The {InternationalProductInvoiceBuilder} class builds UPS XML International invoice Produt Objects.
     #
     # @author Calvin Hughes
     # @since 0.9.3
-    # @attr [String] name The Containing XML Element Name
     # @attr [Hash] opts The international invoice product parts
     class InternationalInvoiceProductBuilder < BuilderBase
-      include Ox
+      attr_accessor :opts
 
-      attr_accessor :name, :opts
-
-      def initialize(name, opts = {})
-        self.name = name
+      def initialize(opts = {})
         self.opts = opts
       end
 
@@ -23,11 +17,11 @@ module UPS
       end
 
       def number
-        element_with_value('Number', opts[:number])
+        element_with_value('Number', opts[:number].to_s)
       end
 
       def value
-        element_with_value('Value', opts[:value])
+        element_with_value('Value', opts[:value].to_s)
       end
 
       def dimensions_unit
@@ -39,7 +33,7 @@ module UPS
       end
 
       def commodity_code
-        element_with_value('CommodityCode', opts[:commodity_code])
+        element_with_value('CommodityCode', opts[:commodity_code][0..14])
       end
 
       def origin_country_code
@@ -47,24 +41,29 @@ module UPS
       end
 
       def product_unit
-        Element.new('Unit').tap do |unit|
-          unit << number
-          unit << value
-          unit << dimensions_unit
-        end
+        unit = element_with_value('Unit', {})
+        unit['Unit'].merge!(number, value, dimensions_unit)
+
+        unit
       end
 
-      # Returns an XML representation of the current object
+      # Returns a JSON representation of the current object
       #
-      # @return [Ox::Element] XML representation of the current object
-      def to_xml
-        Element.new(name).tap do |product|
-          product << description
-          product << commodity_code if opts[:commodity_code]
-          product << part_number if opts[:part_number]
-          product << origin_country_code
-          product << product_unit
+      # @return [Hash] JSON representation of the current object
+      def as_json
+        product = {}
+        product.merge!(description,
+                       origin_country_code,
+                       product_unit)
+
+        if opts[:commodity_code]
+          product.merge!(commodity_code)
         end
+        if opts[:part_number]
+          product.merge!(part_number)
+        end
+
+        product
       end
     end
   end

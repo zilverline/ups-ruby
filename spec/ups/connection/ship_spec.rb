@@ -21,21 +21,17 @@ describe UPS::Connection do
       before do
         Excon.stub(method: :post) do |params|
           case params[:path]
-          when UPS::Connection::SHIP_CONFIRM_PATH
+          when UPS::Connection::SHIP_PATH
             {
               body: File.read("#{stub_path}/ship_confirm_success.xml"), status: 200
-            }
-          when UPS::Connection::SHIP_ACCEPT_PATH
-            {
-              body: File.read("#{stub_path}/ship_accept_success.xml"), status: 200
             }
           end
         end
       end
 
       subject do
+        server.authorize ENV['UPS_ACCOUNT_NUMBER'], ENV['UPS_CLIENT_ID'], ENV['UPS_CLIENT_SECRET']
         server.ship do |shipment_builder|
-          shipment_builder.add_access_request ENV['UPS_LICENSE_NUMBER'], ENV['UPS_USER_ID'], ENV['UPS_PASSWORD']
           shipment_builder.add_shipper shipper
           shipment_builder.add_ship_from shipper
           shipment_builder.add_ship_to ship_to
@@ -46,39 +42,39 @@ describe UPS::Connection do
       end
 
       it 'does what ever it takes to get that shipment shipped!' do
-        subject.wont_equal false
-        subject.success?.must_equal true
+        expect(subject).wont_equal false
+        expect(subject.success?).must_equal true
       end
 
       it 'returns the packages data' do
         subject.packages.must_be_kind_of Array
-        subject.packages.size.must_equal 1
+        expect(subject.packages.size).must_equal 1
       end
 
       it 'returns the label data' do
         subject.label_graphic_image.must_be_kind_of File
-        subject.label_graphic_image.path.end_with?('.gif').must_equal true
-        subject.label_graphic_extension.must_equal '.gif'
+        expect(subject.label_graphic_image.path.end_with?('.gif')).must_equal true
+        expect(subject.label_graphic_extension).must_equal '.gif'
 
         subject.graphic_image.must_be_kind_of File
-        subject.graphic_image.path.end_with?('.gif').must_equal true
-        subject.graphic_extension.must_equal '.gif'
+        expect(subject.graphic_image.path.end_with?('.gif')).must_equal true
+        expect(subject.graphic_extension).must_equal '.gif'
 
         subject.html_image.must_be_kind_of File
-        subject.html_image.path.end_with?('.gif').must_equal true
+        expect(subject.html_image.path.end_with?('.gif')).must_equal true
 
         subject.label_html_image.must_be_kind_of File
-        subject.label_html_image.path.end_with?('.gif').must_equal true
+        expect(subject.label_html_image.path.end_with?('.gif')).must_equal true
       end
 
       it 'should return the requested customs form data' do
         subject.form_graphic_image.must_be_kind_of File
-        subject.form_graphic_image.path.end_with?('.pdf').must_equal true
-        subject.form_graphic_extension.must_equal '.pdf'
+        expect(subject.form_graphic_image.path.end_with?('.pdf')).must_equal true
+        expect(subject.form_graphic_extension).must_equal '.pdf'
       end
 
       it 'should return the tracking number' do
-        subject.tracking_number.must_equal '1Z2220060292353829'
+        expect(subject.tracking_number).must_equal '1Z2220060292353829'
       end
     end
 
@@ -86,21 +82,17 @@ describe UPS::Connection do
       before do
         Excon.stub(method: :post) do |params|
           case params[:path]
-          when UPS::Connection::SHIP_CONFIRM_PATH
+          when UPS::Connection::SHIP_PATH
             {
               body: File.read("#{stub_path}/ship_confirm_success_with_packaging_type.xml"), status: 200
-            }
-          when UPS::Connection::SHIP_ACCEPT_PATH
-            {
-              body: File.read("#{stub_path}/ship_accept_success_with_packaging_type.xml"), status: 200
             }
           end
         end
       end
 
       subject do
+        server.authorize ENV['UPS_ACCOUNT_NUMBER'], ENV['UPS_CLIENT_ID'], ENV['UPS_CLIENT_SECRET']
         server.ship do |shipment_builder|
-          shipment_builder.add_access_request ENV['UPS_LICENSE_NUMBER'], ENV['UPS_USER_ID'], ENV['UPS_PASSWORD']
           shipment_builder.add_shipper shipper
           shipment_builder.add_ship_from shipper
           shipment_builder.add_ship_to ship_to
@@ -113,7 +105,7 @@ describe UPS::Connection do
       let(:supplied_package) { package_with_carrier_packaging }
 
       it 'should return the tracking number' do
-        subject.tracking_number.must_equal '1Z2R466A6790676189'
+        expect(subject.tracking_number).must_equal '1Z2R466A6790676189'
       end
     end
 
@@ -121,13 +113,9 @@ describe UPS::Connection do
       before do
         Excon.stub(method: :post) do |params|
           case params[:path]
-          when UPS::Connection::SHIP_CONFIRM_PATH
+          when UPS::Connection::SHIP_PATH
             {
               body: File.read("#{stub_path}/multi_package/ship_confirm_success.xml"), status: 200
-            }
-          when UPS::Connection::SHIP_ACCEPT_PATH
-            {
-              body: File.read("#{stub_path}/multi_package/ship_accept_success.xml"), status: 200
             }
           end
         end
@@ -137,8 +125,8 @@ describe UPS::Connection do
       let(:second_package) { subject.packages[1] }
 
       subject do
+        server.authorize ENV['UPS_ACCOUNT_NUMBER'], ENV['UPS_CLIENT_ID'], ENV['UPS_CLIENT_SECRET']
         server.ship do |shipment_builder|
-          shipment_builder.add_access_request ENV['UPS_LICENSE_NUMBER'], ENV['UPS_USER_ID'], ENV['UPS_PASSWORD']
           shipment_builder.add_shipper shipper
           shipment_builder.add_ship_from shipper
           shipment_builder.add_ship_to ship_to
@@ -152,56 +140,56 @@ describe UPS::Connection do
       describe 'legacy methods for first package' do
         it 'returns the label data for the first package' do
           subject.label_graphic_image.must_be_kind_of File
-          subject.label_graphic_image.path.end_with?('.gif').must_equal true
-          subject.label_graphic_extension.must_equal '.gif'
+          expect(subject.label_graphic_image.path.end_with?('.gif')).must_equal true
+          expect(subject.label_graphic_extension).must_equal '.gif'
 
           subject.graphic_image.must_be_kind_of File
-          subject.graphic_image.path.end_with?('.gif').must_equal true
-          subject.graphic_extension.must_equal '.gif'
+          expect(subject.graphic_image.path.end_with?('.gif')).must_equal true
+          expect(subject.graphic_extension).must_equal '.gif'
 
           subject.html_image.must_be_kind_of File
-          subject.html_image.path.end_with?('.gif').must_equal true
+          expect(subject.html_image.path.end_with?('.gif')).must_equal true
 
           subject.label_html_image.must_be_kind_of File
-          subject.label_html_image.path.end_with?('.gif').must_equal true
+          expect(subject.label_html_image.path.end_with?('.gif')).must_equal true
         end
 
         it 'returns the tracking number of the first package' do
-          subject.tracking_number.must_equal '1Z2R466A6894635437'
+          expect(subject.tracking_number).must_equal '1Z2R466A6894635437'
         end
       end
 
       it 'returns the packages data' do
         subject.packages.must_be_kind_of Array
-        subject.packages.size.must_equal 2
+        expect(subject.packages.size).must_equal 2
       end
 
       describe 'data per package' do
         describe 'package #1' do
           it 'returns the correct label data' do
             first_package.label_graphic_image.must_be_kind_of File
-            first_package.label_graphic_image.path.end_with?('.gif').must_equal true
+            expect(first_package.label_graphic_image.path.end_with?('.gif')).must_equal true
             first_package.label_html_image.must_be_kind_of File
-            first_package.label_html_image.path.end_with?('.gif').must_equal true
-            first_package.label_graphic_extension.must_equal '.gif'
+            expect(first_package.label_html_image.path.end_with?('.gif')).must_equal true
+            expect(first_package.label_graphic_extension).must_equal '.gif'
           end
 
           it 'returns the correct tracking number' do
-            first_package.tracking_number.must_equal '1Z2R466A6894635437'
+            expect(first_package.tracking_number).must_equal '1Z2R466A6894635437'
           end
         end
 
         describe 'package #2' do
           it 'returns the correct label data' do
             second_package.label_graphic_image.must_be_kind_of File
-            second_package.label_graphic_image.path.end_with?('.gif').must_equal true
+            expect(second_package.label_graphic_image.path.end_with?('.gif')).must_equal true
             second_package.label_html_image.must_be_kind_of File
-            second_package.label_html_image.path.end_with?('.gif').must_equal true
-            second_package.label_graphic_extension.must_equal '.gif'
+            expect(second_package.label_html_image.path.end_with?('.gif')).must_equal true
+            expect(second_package.label_graphic_extension).must_equal '.gif'
           end
 
           it 'returns the correct tracking_number' do
-            second_package.tracking_number.must_equal '1Z2R466A6893005048'
+            expect(second_package.tracking_number).must_equal '1Z2R466A6893005048'
           end
         end
       end
@@ -212,15 +200,15 @@ describe UPS::Connection do
     before do
       Excon.stub({:method => :post}) do |params|
         case params[:path]
-        when UPS::Connection::SHIP_CONFIRM_PATH
+        when UPS::Connection::SHIP_PATH
           {body: File.read("#{stub_path}/ship_confirm_failure.xml"), status: 200}
         end
       end
     end
 
     subject do
+      server.authorize ENV['UPS_ACCOUNT_NUMBER'], ENV['UPS_CLIENT_ID'], ENV['UPS_CLIENT_SECRET']
       server.ship do |shipment_builder|
-        shipment_builder.add_access_request ENV['UPS_LICENSE_NUMBER'], ENV['UPS_USER_ID'], ENV['UPS_PASSWORD']
         shipment_builder.add_shipper shipper
         shipment_builder.add_ship_from shipper
         shipment_builder.add_ship_to ship_to
@@ -231,9 +219,9 @@ describe UPS::Connection do
     end
 
     it "should return a Parsed response with an error code and error description" do
-      subject.wont_equal false
-      subject.success?.must_equal false
-      subject.error_description.must_equal "Missing or invalid shipper number"
+      expect(subject).wont_equal false
+      expect(subject.success?).must_equal false
+      expect(subject.error_description).must_equal "Missing or invalid shipper number"
     end
   end
 
@@ -241,17 +229,15 @@ describe UPS::Connection do
     before do
       Excon.stub({:method => :post}) do |params|
         case params[:path]
-        when UPS::Connection::SHIP_CONFIRM_PATH
+        when UPS::Connection::SHIP_PATH
           {body: File.read("#{stub_path}/ship_confirm_success.xml"), status: 200}
-        when UPS::Connection::SHIP_ACCEPT_PATH
-          {body: File.read("#{stub_path}/ship_accept_failure.xml"), status: 200}
         end
       end
     end
 
     subject do
+      server.authorize ENV['UPS_ACCOUNT_NUMBER'], ENV['UPS_CLIENT_ID'], ENV['UPS_CLIENT_SECRET']
       server.ship do |shipment_builder|
-        shipment_builder.add_access_request ENV['UPS_LICENSE_NUMBER'], ENV['UPS_USER_ID'], ENV['UPS_PASSWORD']
         shipment_builder.add_shipper shipper
         shipment_builder.add_ship_from shipper
         shipment_builder.add_ship_to ship_to
@@ -262,9 +248,9 @@ describe UPS::Connection do
     end
 
     it "should return a Parsed response with an error code and error description" do
-      subject.wont_equal false
-      subject.success?.must_equal false
-      subject.error_description.must_equal "Missing or invalid shipper number"
+      expect(subject).wont_equal false
+      expect(subject.success?).must_equal false
+      expect(subject.error_description).must_equal "Missing or invalid shipper number"
     end
   end
 end

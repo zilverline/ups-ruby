@@ -1,15 +1,11 @@
-require 'ox'
-
 module UPS
   module Builders
-    # The {AddressBuilder} class builds UPS XML Address Objects.
+    # The {AddressBuilder} class builds UPS JSON Address Objects.
     #
     # @author Paul Trippett
     # @since 0.1.0
     # @attr [Hash] opts The Address Parts
     class AddressBuilder < BuilderBase
-      include Ox
-
       attr_accessor :opts
 
       # Initializes a new {AddressBuilder} object
@@ -73,66 +69,59 @@ module UPS
         end
       end
 
-      # Returns an XML representation of address_line_1
+      # Returns JSON representation of main address line
       #
-      # @return [Ox::Element] XML representation of address_line_1 address part
+      # @return [Hash] JSON representation of main address line
       def address_line_1
-        element_with_value('AddressLine1', opts[:address_line_1][0..34])
+        element_with_value('AddressLine', opts[:address_line_1][0..34])
       end
 
-      # Returns an XML representation of address_line_2
+      # Returns JSON representation of city
       #
-      # @return [Ox::Element] XML representation of address_line_2 address part
-      def address_line_2
-        data = (opts.key? :address_line_2) ? opts[:address_line_2][0..34] : ''
-        element_with_value('AddressLine2', data)
-      end
-
-      # Returns an XML representation of city
-      #
-      # @return [Ox::Element] XML representation of the city address part
+      # @return [Hash] JSON representation of the city address part
       def city
         element_with_value('City', opts[:city][0..29])
       end
 
-      # Returns an XML representation of state
+      # Returns JSON representation of state
       #
-      # @return [Ox::Element] XML representation of the state address part
+      # @return [Hash] JSON representation of the state address part
       def state
-        element_with_value('StateProvinceCode', opts[:state])
+        element_with_value('StateProvinceCode', opts[:state][0..4])
       end
 
-      # Returns an XML representation of postal_code
+      # Returns JSON representation of postal code
       #
-      # @return [Ox::Element] XML representation of the postal_code address part
+      # @return [Hash] JSON representation of the postal code address part
       def postal_code
-        element_with_value('PostalCode', opts[:postal_code][0..9])
+        element_with_value('PostalCode', opts[:postal_code][0..8])
       end
 
-      # Returns an XML representation of country
+      # Returns JSON representation of country
       #
-      # @return [Ox::Element] XML representation of the country address part
+      # @return [Hash] JSON representation of the country address part
       def country
         element_with_value('CountryCode', opts[:country][0..1])
       end
 
-      def email_address
-        element_with_value('EmailAddress', opts[:email_address][0..49])
-      end
-
-      # Returns an XML representation of a UPS Address
+      # Returns JSON representation of the full address
       #
-      # @return [Ox::Element] XML representation of the current object
-      def to_xml
-        Element.new('Address').tap do |address|
-          address << address_line_1
-          address << address_line_2
-          address << email_address if opts[:email_address]
-          address << city
-          address << state
-          address << postal_code
-          address << country
+      # @return [Hash] JSON representation of the full address
+      def as_json
+        addr = element_with_value('Address', {})
+        addr['Address'].merge!(address_line_1,
+                               city,
+                               country)
+
+        if opts[:state]
+          addr['Address'].merge!(state)
         end
+
+        if opts[:postal_code]
+          addr['Address'].merge!(postal_code)
+        end
+
+        addr
       end
     end
   end

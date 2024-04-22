@@ -1,19 +1,15 @@
-require 'ox'
-
 module UPS
   module Builders
-    # The {OrganisationBuilder} class builds UPS XML Organization Objects.
+    # The {OrganisationBuilder} class builds UPS JSON Organization Objects.
     #
     # @author Paul Trippett
     # @since 0.1.0
     # @attr [String] name The Containing XML Element Name
     # @attr [Hash] opts The Organization and Address Parts
     class OrganisationBuilder < BuilderBase
-      include Ox
-
       attr_accessor :name, :opts
 
-      # Initializes a new {AddressBuilder} object
+      # Initializes a new {OrganisationBuilder} object
       #
       # @param [Hash] opts The Organization and Address Parts
       # @option opts [String] :company_name Company Name
@@ -26,57 +22,54 @@ module UPS
       def initialize(name, opts = {})
         self.name = name
         self.opts = opts
-        self.opts[:skip_ireland_state_validation] = (name == 'SoldTo')
+        self.opts[:skip_ireland_state_validation] = false
       end
 
-      # Returns an XML representation of company_name
+      # Returns JSON representation of company name
       #
-      # @return [Ox::Element] XML representation of company_name
+      # @return [Hash] JSON representation of company name
       def company_name
-        element_with_value('CompanyName', opts[:company_name][0..34])
+        element_with_value('Name', opts[:company_name][0..34])
       end
 
-      # Returns an XML representation of phone_number
+      # Returns JSON representation of phone number
       #
-      # @return [Ox::Element] XML representation of phone_number
+      # @return [Hash] JSON representation of phone number
       def phone_number
-        element_with_value('PhoneNumber', opts[:phone_number][0..14])
+        multi_valued('Phone', 'Number' => opts[:phone_number][0..14])
       end
 
-      # Returns an XML representation of AttentionName for which we use company
-      # name
+      # Returns JSON representation of attention name
       #
-      # @return [Ox::Element] XML representation of company_name part
+      # @return [Hash] JSON representation of attention name
       def attention_name
         element_with_value('AttentionName', opts[:attention_name][0..34])
       end
 
-      # Returns an XML representation of sender_vat_number of the company
+      # Returns JSON representation of tax identification number of the company
       #
-      # @return [Ox::Element] XML representation of sender_vat_number
+      # @return [Hash] JSON representation of tax identification number
       def tax_identification_number
-        element_with_value('TaxIdentificationNumber', opts[:sender_vat_number] || '')
+        element_with_value('TaxIdentificationNumber', opts[:sender_tax_number] || '')
       end
 
-      # Returns an XML representation of address
+      # Returns an JSON representation of address
       #
-      # @return [Ox::Element] An instance of {AddressBuilder} containing the
+      # @return [Hash] An instance of {AddressBuilder} containing the
       #   address
       def address
-        AddressBuilder.new(opts).to_xml
+        AddressBuilder.new(opts).as_json
       end
 
-      # Returns an XML representation of a UPS Organization
-      #
-      # @return [Ox::Element] XML representation of the current object
-      def to_xml
-        Element.new(name).tap do |org|
-          org << company_name
-          org << phone_number
-          org << attention_name
-          org << address
-          org << tax_identification_number
-        end
+      def as_json
+        org = element_with_value(name, {})
+        org[name].merge!(company_name,
+                         phone_number,
+                         attention_name,
+                         tax_identification_number,
+                         address)
+
+        org
       end
     end
   end

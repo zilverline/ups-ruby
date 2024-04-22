@@ -35,7 +35,6 @@
 			<xsd:element name="ShipTo" type="ShipToType"/>
 			<xsd:element name="AlternateDeliveryAddress" type="AlternateDeliveryAddressType" minOccurs="0"/>
 			<xsd:element name="ShipFrom" type="ShipFromType" minOccurs="0"/>
-			<xsd:element name="SoldTo" type="SoldToType" minOccurs="0"/>
 			<xsd:choice>
 				<xsd:element name="PaymentInformation" type="PaymentInformationType" minOccurs="0"/>
 				<xsd:element name="ItemizedPaymentInformation" type="ItemizedPaymentInformationType" minOccurs="0"/>
@@ -141,27 +140,6 @@
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="ShipFromAddressType">
-		<xsd:sequence>
-			<xsd:element name="AddressLine1" type="xsd:string"/>
-			<xsd:element name="AddressLine2" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="AddressLine3" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="City" type="xsd:string"/>
-			<xsd:element name="StateProvinceCode" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="PostalCode" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="CountryCode" type="xsd:string" minOccurs="0"/>
-		</xsd:sequence>
-	</xsd:complexType>
-	<xsd:complexType name="SoldToType">
-		<xsd:sequence>
-			<xsd:element name="Option" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="CompanyName" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="AttentionName" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="TaxIdentificationNumber" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="PhoneNumber" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="Address" type="SoldToAddressType" minOccurs="0"/>
-		</xsd:sequence>
-	</xsd:complexType>
-	<xsd:complexType name="SoldToAddressType">
 		<xsd:sequence>
 			<xsd:element name="AddressLine1" type="xsd:string"/>
 			<xsd:element name="AddressLine2" type="xsd:string" minOccurs="0"/>

@@ -3,6 +3,7 @@ require 'excon'
 require 'digest/md5'
 require 'ox'
 require 'base64'
+require 'json'
 
 module UPS
   # The {Connection} class acts as the main entry point to performing rate and
@@ -21,11 +22,13 @@ module UPS
     TEST_URL = 'https://wwwcie.ups.com'
     LIVE_URL = 'https://onlinetools.ups.com'
 
-    RATE_PATH = '/ups.app/xml/Rate'
-    SHIP_CONFIRM_PATH = '/ups.app/xml/ShipConfirm'
-    SHIP_ACCEPT_PATH = '/ups.app/xml/ShipAccept'
-    ADDRESS_PATH = '/ups.app/xml/XAV'
-    TRACK_PATH = '/ups.app/xml/Track'
+    RATE_VERSION = 'v2403'
+    SHIP_VERSION = 'v2403'
+    TRACK_VERSION = 'v1'
+
+    RATE_PATH = "/api/rating/#{RATE_VERSION}/Rate"
+    SHIP_PATH = "/api/shipments/#{SHIP_VERSION}/ship"
+    TRACK_PATH = "/api/track/#{TRACK_VERSION}/details"
 
     DEFAULT_PARAMS = {
       test_mode: false
@@ -59,52 +62,73 @@ module UPS
         yield rate_builder
       end
 
-      response = get_response(RATE_PATH, rate_builder.to_xml)
+      response = get_response(RATE_PATH, rate_builder.as_json)
       UPS::Parsers::RatesParser.new(response.body)
     end
 
     # Makes a request to ship a package
     #
-    # A pre-configured {Builders::ShipConfirmBuilder} object can be passed as
+    # A pre-configured {Builders::ShipBuilder} object can be passed as
     # the first option or a block yielded to configure a new
-    # {Builders::ShipConfirmBuilder} object.
+    # {Builders::ShipBuilder} object.
     #
-    # @param [Builders::ShipConfirmBuilder] confirm_builder A pre-configured
-    #   {Builders::ShipConfirmBuilder} object to use
-    # @yield [ship_confirm_builder] A ShipConfirmBuilder object for configuring
+    # @param [Builders::ShipBuilder] confirm_builder A pre-configured
+    #   {Builders::ShipBuilder} object to use
+    # @yield [ship_builder] A ShipBuilder object for configuring
     #   the shipment information sent
     def ship(confirm_builder = nil)
       if confirm_builder.nil? && block_given?
-        confirm_builder = Builders::ShipConfirmBuilder.new
+        confirm_builder = Builders::ShipBuilder.new
         yield confirm_builder
       end
 
-      confirm_response = make_confirm_request(confirm_builder)
-      return confirm_response unless confirm_response.success?
-
-      accept_builder = build_accept_request_from_confirm(confirm_builder, confirm_response)
-      make_accept_request(accept_builder)
+      make_confirm_request(confirm_builder)
     end
 
     # Makes a request to Track the status for a shipment.
     #
-    # A pre-configured {Builders::TrackBuilder} object can be passed as the first
-    # option or a block yielded to configure a new {Builders::TrackBuilder}
-    # object.
-    #
-    # @param [Builders::TrackBuilder] track_builder A pre-configured
-    #   {Builders::TrackBuilder} object to use
-    # @yield [track_builder] A TrackBuilder object for configuring
-    #   the shipment information sent
-    def track(track_builder = nil)
-      if track_builder.nil? && block_given?
-        track_builder = UPS::Builders::TrackBuilder.new
-        yield track_builder
+    # @param [String] number Tracking number to request status for
+    def track(number)
+      if number.empty?
+        fail Exceptions::InvalidAttributeError, 'Tracking number is required'
       end
 
-      response = get_response(TRACK_PATH, track_builder.to_xml)
-
+      response = get_response(TRACK_PATH + "/#{number}")
       UPS::Parsers::TrackParser.new(response.body)
+    end
+
+    # Authorizes the connection with the UPS API
+    #
+    # @param [String] account_number Account number to use for the request
+    # @param [String] client_id Client ID to use
+    # @param [String] client_secret Client secret to use
+    # @return [void]
+    def authorize(account_number, client_id, client_secret)
+      if url == TEST_URL
+        self.account_number = account_number
+        self.client_id = client_id
+        self.client_secret = client_secret
+
+        @token_data = {
+          'access_token' => 'test_token',
+          'expires_in' => 189200000, # 6 years
+          'issued_at' => Time.now.to_i,
+          'refresh_token' => 'test_refresh_token'
+        }
+
+        return nil
+      end
+
+      # Make sure we were given credentials for OAuth
+      if account_number.blank? || client_id.blank? || client_secret.blank?
+        fail Exceptions::AuthorizationError, 'Missing account_number, client_id, or client_secret'
+      end
+
+      self.account_number = account_number
+      self.client_id = client_id
+      self.client_secret = client_secret
+
+      create_token()
     end
 
     private
@@ -113,38 +137,33 @@ module UPS
       "#{url}#{path}"
     end
 
-    def get_response(path, body)
+    # Makes a request to the UPS API
+    #
+    # @param [String] path The path to make the request to
+    # @param [Optional, String] body The body to send with the request
+    # @return [Excon::Response] The response from the request
+    def get_response(path, body = {})
       access_token = get_access_token()
+
+      headers = {
+        'Content-Type' => 'application/json',
+        'Authorization' => "Bearer #{access_token}"
+      }
 
       Excon.post(
         build_url(path),
-        body: body,
-        headers: {
-          'Authorization' => "Bearer #{access_token}"
-        }
+        headers: headers,
+        body: body.to_json
       )
     end
 
     def make_confirm_request(confirm_builder)
-      make_ship_request(confirm_builder, SHIP_CONFIRM_PATH, Parsers::ShipConfirmParser)
-    end
-
-    def make_accept_request(accept_builder)
-      make_ship_request(accept_builder, SHIP_ACCEPT_PATH, Parsers::ShipAcceptParser)
+      make_ship_request(confirm_builder, SHIP_PATH, Parsers::ShipParser)
     end
 
     def make_ship_request(builder, path, ship_parser)
-      response = get_response(path, builder.to_xml)
+      response = get_response(path, builder.as_json)
       ship_parser.new(response.body)
-    end
-
-    def build_accept_request_from_confirm(confirm_builder, confirm_response)
-      UPS::Builders::ShipAcceptBuilder.new.tap do |builder|
-        builder.add_access_request confirm_builder.license_number,
-                                   confirm_builder.user_id,
-                                   confirm_builder.password
-        builder.add_shipment_digest confirm_response.shipment_digest
-      end
     end
 
     # Creates a new access token
@@ -240,25 +259,6 @@ module UPS
       end
 
       @token_data['access_token']
-    end
-
-    # Authorizes the connection with the UPS API
-    #
-    # @param [String] account_number Account number to use for the request
-    # @param [String] client_id Client ID to use
-    # @param [String] client_secret Client secret to use
-    # @return [void]
-    def authorize(account_number, client_id, client_secret)
-      # Make sure we were given credentials for OAuth
-      if params[:account_number].blank? || params[:client_id].blank? || params[:client_secret].blank?
-        fail Exceptions::AuthorizationError, 'Missing account_number, client_id, or client_secret'
-      end
-
-      self.account_number = account_number
-      self.client_id = client_id
-      self.client_secret = client_secret
-
-      create_token()
     end
   end
 end

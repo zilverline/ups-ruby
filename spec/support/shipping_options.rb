@@ -10,7 +10,7 @@ module ShippingOptions
       postal_code: 'SA1 1DA',
       country: 'GB',
       shipper_number: ENV['UPS_ACCOUNT_NUMBER'],
-      sender_vat_number: '123456'
+      sender_tax_number: '123456'
     }
   end
 
@@ -57,7 +57,7 @@ module ShippingOptions
     {
       weight: '1',
       unit: 'KGS',
-      packaging_type:{
+      packaging_type: {
         code: '01',
         description: 'Tube'
       }
@@ -74,7 +74,7 @@ module ShippingOptions
         height: 20,
         unit: 'CM'
       },
-      packaging_type:{
+      packaging_type: {
         code: '01',
         description: 'Tube'
       }

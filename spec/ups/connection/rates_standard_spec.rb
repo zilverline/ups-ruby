@@ -18,8 +18,8 @@ describe UPS::Connection do
 
   describe 'if requesting rates' do
     subject do
+      server.authorize ENV['UPS_ACCOUNT_NUMBER'], ENV['UPS_CLIENT_ID'], ENV['UPS_CLIENT_SECRET']
       server.rates do |rate_builder|
-        rate_builder.add_access_request ENV['UPS_LICENSE_NUMBER'], ENV['UPS_USER_ID'], ENV['UPS_PASSWORD']
         rate_builder.add_shipper shipper
         rate_builder.add_ship_from shipper
         rate_builder.add_ship_to ship_to
@@ -51,7 +51,7 @@ describe UPS::Connection do
           },
           {
             :service_code=>"65",
-            :service_name=>"Express Saver",
+            :service_name=>"UPS Saver",
             :warnings=>["Your invoice may vary from the displayed reference rates"],
             :total=>"45.82"
           },
@@ -123,7 +123,7 @@ describe UPS::Connection do
             },
             {
               service_code: '65',
-              service_name: 'Express Saver',
+              service_name: 'UPS Saver',
               warnings: [
                 ' The weight exceeds the limit for the UPS Letter/Envelope rate and will be rated using the weight. ',
                 ' Your invoice may vary from the displayed reference rates '
@@ -169,7 +169,7 @@ describe UPS::Connection do
             },
             {
               service_code: '65',
-              service_name: 'Express Saver',
+              service_name: 'UPS Saver',
               warnings: [
                 ' The weight exceeds the limit for the UPS Letter/Envelope rate and will be rated using the weight. ',
                 ' Your invoice may vary from the displayed reference rates '
@@ -201,9 +201,9 @@ describe UPS::Connection do
         end
 
         it 'returns error' do
-          subject.wont_equal false
-          subject.success?.must_equal false
-          subject.error_description.must_equal "Missing or invalid shipper number."
+          expect(subject).wont_equal false
+          expect(subject.success?).must_equal false
+          expect(subject.error_description).must_equal "Missing or invalid shipper number."
         end
       end
 
@@ -218,9 +218,9 @@ describe UPS::Connection do
         end
 
         it 'returns error' do
-          subject.wont_equal false
-          subject.success?.must_equal false
-          subject.error_description.must_equal "Packages must weigh more than zero kg."
+          expect(subject).wont_equal false
+          expect(subject.success?).must_equal false
+          expect(subject.error_description).must_equal "Packages must weigh more than zero kg."
         end
       end
     end

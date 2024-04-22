@@ -24,10 +24,12 @@ Yard documentation can be found at [RubyDoc](http://www.rubydoc.info/github/veeq
 ### Return rates
 
 ```ruby
-require 'ups'
+require 'ups-ruby'
+
 server = UPS::Connection.new(test_mode: true)
+server.authorize 'ACCOUNT_NUMBER', 'CLIENT_ID', 'CLIENT_SECRET'
+
 response = server.rates do |rate_builder|
-  rate_builder.add_access_request 'API_KEY', 'USERNAME', 'PASSWORD'
   rate_builder.add_shipper company_name: 'Veeqo Limited',
     phone_number: '01792 123456',
     address_line_1: '11 Wind Street',
@@ -59,9 +61,11 @@ end
 ### Create domestic shipment
 ```ruby
 require 'ups-ruby'
+
 server = UPS::Connection.new(test_mode: true)
+server.authorize 'ACCOUNT_NUMBER', 'CLIENT_ID', 'CLIENT_SECRET'
+
 response = server.ship do |shipment_builder|
-  shipment_builder.add_access_request 'API_KEY', 'USERNAME', 'PASSWORD'
   shipment_builder.add_shipper company_name: 'Veeqo Limited',
     phone_number: '01792 123456',
     attention_name: 'John Doe',
@@ -109,9 +113,11 @@ response.tracking_number
 ### Create international shipment with customs documentation request
 ```ruby
 require 'ups-ruby'
+
 server = UPS::Connection.new(test_mode: true)
+server.authorize 'ACCOUNT_NUMBER', 'CLIENT_ID', 'CLIENT_SECRET'
+
 response = server.ship do |shipment_builder|
-  shipment_builder.add_access_request 'API_KEY', 'USERNAME', 'PASSWORD'
   shipment_builder.add_shipper company_name: 'Veeqo Limited',
     phone_number: '01792 123456',
     attention_name: 'John Doe',

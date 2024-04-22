@@ -1,5 +1,3 @@
-require 'ox'
-
 module UPS
   module Builders
     # The {RateBuilder} class builds UPS XML Rate Objects.
@@ -7,14 +5,12 @@ module UPS
     # @author Paul Trippett
     # @since 0.1.0
     class RateBuilder < BuilderBase
-      include Ox
-
       # Initializes a new {RateBuilder} object
       #
       def initialize
-        super 'RatingServiceSelectionRequest'
+        super 'RateRequest'
 
-        add_request('Rate', 'Shop')
+        add_request 'Shop'
       end
     end
   end

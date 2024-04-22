@@ -25,8 +25,7 @@ module UPS
     autoload :ParserBase,          'ups/parsers/parser_base'
     autoload :RatesParser,         'ups/parsers/rates_parser'
     autoload :RateParser,          'ups/parsers/rate_parser'
-    autoload :ShipConfirmParser,   'ups/parsers/ship_confirm_parser'
-    autoload :ShipAcceptParser,    'ups/parsers/ship_accept_parser'
+    autoload :ShipParser,          'ups/parsers/ship_parser'
     autoload :TrackParser,         'ups/parsers/track_parser'
   end
 
@@ -34,12 +33,10 @@ module UPS
     autoload :BuilderBase,                        'ups/builders/builder_base'
     autoload :RateBuilder,                        'ups/builders/rate_builder'
     autoload :AddressBuilder,                     'ups/builders/address_builder'
-    autoload :ShipConfirmBuilder,                 'ups/builders/ship_confirm_builder'
+    autoload :ShipBuilder,                        'ups/builders/ship_builder'
     autoload :InternationalInvoiceBuilder,        'ups/builders/international_invoice_builder'
     autoload :InternationalInvoiceProductBuilder, 'ups/builders/international_invoice_product_builder'
-    autoload :ShipAcceptBuilder,                  'ups/builders/ship_accept_builder'
     autoload :OrganisationBuilder,                'ups/builders/organisation_builder'
     autoload :ShipperBuilder,                     'ups/builders/shipper_builder'
-    autoload :TrackBuilder,                       'ups/builders/track_builder'
   end
 end

@@ -6,7 +6,7 @@ describe UPS::Connection do
     subject { UPS::Connection.new(test_mode: true) }
 
     it "should set the uri to the test url" do
-      subject.url.must_equal UPS::Connection::TEST_URL
+      expect(subject.url).must_equal UPS::Connection::TEST_URL
     end
   end
 
@@ -14,7 +14,7 @@ describe UPS::Connection do
     subject { UPS::Connection.new }
 
     it "should set the uri to the live url" do
-      subject.url.must_equal UPS::Connection::LIVE_URL
+      expect(subject.url).must_equal UPS::Connection::LIVE_URL
     end
   end
 end
