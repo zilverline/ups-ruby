@@ -18,20 +18,15 @@ describe UPS::Connection do
 
   describe 'if tracking shipment' do
     subject do
-      server.track do |track_builder|
-        track_builder.add_access_request ENV['UPS_LICENSE_NUMBER'], ENV['UPS_USER_ID'], ENV['UPS_PASSWORD']
-        track_builder.add_tracking_number '1Z12345E6692804405'
-      end
+      server.authorize ENV['UPS_ACCOUNT_NUMBER'], ENV['UPS_CLIENT_ID'], ENV['UPS_CLIENT_SECRET']
+      server.track '1Z12345E6692804405'
     end
 
     describe 'successful track response' do
       before do
-        Excon.stub(method: :post) do |params|
-          case params[:path]
-          when UPS::Connection::TRACK_PATH
-            { body: File.read("#{stub_path}/track_success.xml"), status: 200 }
-          end
-        end
+        Excon.stub({ :method => :post }, lambda {|params|
+          { :body => File.read("#{stub_path}/track_success.json"), :status => 200 }
+        })
       end
 
       it 'returns the tracking status' do
@@ -41,6 +36,19 @@ describe UPS::Connection do
           status_type_description: 'DELIVERED',
           status_type_code: 'D'
         )
+      end
+    end
+  end
+
+  describe 'if tracking shipment with no tracking number' do
+    subject do
+      server.authorize ENV['UPS_ACCOUNT_NUMBER'], ENV['UPS_CLIENT_ID'], ENV['UPS_CLIENT_SECRET']
+      server.track ''
+    end
+
+    it 'raises an error' do
+      assert_raises UPS::Exceptions::InvalidAttributeError do
+        subject
       end
     end
   end

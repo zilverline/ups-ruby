@@ -156,7 +156,7 @@ module UPS
         all = element_with_value(name, {})
         all[name].merge!(root)
 
-        shipment_root.merge!(shipment_service_options)
+        shipment_root.merge!({ 'ShipmentServiceOptions' => shipment_service_options })
         all[name]['Shipment'] = shipment_root
 
         all

@@ -1,0 +1,52 @@
+{
+  "trackResponse": {
+    "shipment": [
+      {
+        "inquiryNumber": "1Z12345E6692804405",
+        "package": [
+          {
+            "activity": [
+              {
+                "date": "20100610",
+                "gmtDate": "2019-04-15",
+                "gmtOffset": "-04.00",
+                "gmtTime": "15.40.17",
+                "location": {
+                  "address": {
+                    "city": "ANYTOWN",
+                    "stateProvince": "GA",
+                    "postalCode": "30340",
+                    "countryCode": "US"
+                  }
+                },
+                "status": {
+                  "code": "D",
+                  "description": "DELIVERED"
+                },
+                "time": "120000"
+              },
+              {
+                "date": "20100608",
+                "gmtDate": "2019-04-15",
+                "gmtOffset": "-04.00",
+                "gmtTime": "15.30.17",
+                "location": {
+                  "address": {
+                    "countryCode": "US"
+                  }
+                },
+                "status": {
+                  "code": "M",
+                  "description": "BILLING INFORMATION RECEIVED. SHIPMENT DATE PENDING."
+                }
+              }
+            ],
+            "referenceNumber": {
+              "number": "LINE4AND115"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

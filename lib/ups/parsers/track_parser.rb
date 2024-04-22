@@ -1,5 +1,4 @@
 require 'uri'
-require 'ox'
 
 module UPS
   module Parsers
@@ -18,33 +17,33 @@ module UPS
       end
 
       def status_date
-        Date.parse(latest_activity[:Date])
+        Date.parse(latest_activity[:date])
       end
 
       def status_type_description
-        status_type[:Description]
+        status_type[:description]
       end
 
       def status_type_code
-        status_type[:Code]
+        status_type[:code]
       end
 
       private
 
       def status_type
-        latest_activity[:Status][:StatusType]
+        latest_activity[:status]
       end
 
       def latest_activity
-        activities.sort_by {|a| [a[:GMTDate], a[:GMTTime]] }.last
+        activities.sort_by {|a| [a[:gmtDate], a[:gmtTime]] }.last
       end
 
       def activities
-        normalize_response_into_array(root_response[:Shipment][:Package][:Activity])
+        normalize_response_into_array(root_response[:shipment][0][:package][0][:activity])
       end
 
       def root_response
-        parsed_response[:TrackResponse]
+        parsed_response[:trackResponse]
       end
     end
   end
