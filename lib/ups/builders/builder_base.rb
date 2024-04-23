@@ -200,10 +200,6 @@ module UPS
         multi_valued(name, 'Code' => code, 'Description' => description)
       end
 
-      def insurance_charge(value)
-        multi_valued('InsuranceCharges', 'MonetaryValue' => value)
-      end
-
       def multi_valued(name, params)
         {
           name => params.each { |key, value| element_with_value(key, value) }

@@ -12,9 +12,6 @@ ENV['UPS_ACCOUNT_NUMBER'] = '' unless ENV.key? 'UPS_ACCOUNT_NUMBER'
 ENV['UPS_CLIENT_ID'] = '' unless ENV.key? 'UPS_CLIENT_ID'
 ENV['UPS_CLIENT_SECRET'] = '' unless ENV.key? 'UPS_CLIENT_SECRET'
 
-require 'nokogiri'
 require 'minitest/autorun'
 
-require 'support/schema_path'
 require 'support/shipping_options'
-require 'support/xsd_validator'
