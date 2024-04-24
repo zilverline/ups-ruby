@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UPS
   module Builders
     # The {BuilderBase} class builds UPS JSON Objects.
@@ -43,15 +45,15 @@ module UPS
       # @return [void]
       def add_payment_information(ship_number)
         shipment_root.merge!({
-          'PaymentInformation' => {
-            'ShipmentCharge' => {
-              'Type' => '01',
-              'BillShipper' => {
-                'AccountNumber' => ship_number
-              }
-            }
-          }
-        })
+                               'PaymentInformation' => {
+                                 'ShipmentCharge' => {
+                                   'Type' => '01',
+                                   'BillShipper' => {
+                                     'AccountNumber' => ship_number
+                                   }
+                                 }
+                               }
+                             })
       end
 
       # Adds a Shipper section to the JSON body being built
@@ -112,7 +114,8 @@ module UPS
 
         item = {}
         item.merge!(packaging_type(opts[:packaging_type] || customer_supplied_packaging))
-        item.merge!(element_with_value('Description', opts[:description] || 'Rate'))
+        item.merge!(element_with_value('Description',
+                                       opts[:description] || 'Rate'))
         item.merge!(package_weight(opts[:weight], opts[:unit]))
 
         if opts[:dimensions]
@@ -123,7 +126,7 @@ module UPS
       end
 
       def customer_supplied_packaging
-        {code: '02', description: 'Customer Supplied Package'}
+        { code: '02', description: 'Customer Supplied Package' }
       end
 
       # Adds a RateInformation/NegotiatedRatesIndicator section to the JSON
@@ -131,7 +134,8 @@ module UPS
       #
       # @return [void]
       def add_rate_information
-        shipment_root.merge!(multi_valued('ShipmentRatingOptions', 'NegotiatedRatesIndicator' => '1'))
+        shipment_root.merge!(multi_valued('ShipmentRatingOptions',
+                                          'NegotiatedRatesIndicator' => '1'))
       end
 
       # Adds a Delivery Confirmation DCIS Type to the shipment service options
@@ -139,14 +143,17 @@ module UPS
       # @param [String] dcis_type DCIS type
       # @return [void]
       def add_shipment_delivery_confirmation(dcis_type)
-        shipment_service_options.merge!(multi_valued('DeliveryConfirmation', 'DCISType' => dcis_type))
+        shipment_service_options.merge!(multi_valued('DeliveryConfirmation',
+                                                     'DCISType' => dcis_type))
       end
 
       # Adds Direct Delivery Only indicator to the shipment service options
       #
       # @return [void]
       def add_shipment_direct_delivery_only
-        shipment_service_options.merge!(element_with_value('DirectDeliveryOnlyIndicator', ''))
+        shipment_service_options.merge!(element_with_value(
+                                          'DirectDeliveryOnlyIndicator', ''
+                                        ))
       end
 
       # Returns JSON representation of the object
@@ -165,13 +172,15 @@ module UPS
       private
 
       def packaging_type(packaging_options_hash)
-        code_description 'Packaging', packaging_options_hash[:code], packaging_options_hash[:description]
+        code_description 'Packaging', packaging_options_hash[:code],
+                         packaging_options_hash[:description]
       end
 
       def package_weight(weight, unit)
         pkg_weight = element_with_value('PackageWeight', {})
         pkg_weight['PackageWeight'].merge!(unit_of_measurement(unit),
-                                           element_with_value('Weight', weight.to_s))
+                                           element_with_value('Weight',
+                                                              weight.to_s))
 
         pkg_weight
       end
@@ -179,9 +188,12 @@ module UPS
       def package_dimensions(dimensions)
         dim = element_with_value('Dimensions', {})
         dim['Dimensions'].merge!(unit_of_measurement(dimensions[:unit]),
-                                 element_with_value('Length', dimensions[:length].to_s[0..3]),
-                                 element_with_value('Width', dimensions[:width].to_s[0..3]),
-                                 element_with_value('Height', dimensions[:height].to_s[0..3]))
+                                 element_with_value('Length',
+                                                    dimensions[:length].to_s[0..3]),
+                                 element_with_value('Width',
+                                                    dimensions[:width].to_s[0..3]),
+                                 element_with_value('Height',
+                                                    dimensions[:height].to_s[0..3]))
 
         dim
       end

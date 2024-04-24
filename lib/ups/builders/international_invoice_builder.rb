@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module UPS
   module Builders
     # The {InternationalInvoiceBuilder} class builds UPS JSON International invoice Objects.
     #
     # @author Calvin Hughes
     # @since 0.9.3
-    # @attr [String] name The Containing XML Element Name
+    # @attr [String] name The Containing Element Name
     # @attr [Hash] opts The international invoice parts
     class InternationalInvoiceBuilder < BuilderBase
       attr_accessor :name, :opts
@@ -39,7 +41,8 @@ module UPS
       end
 
       def freight_charge
-        multi_valued('FreightCharges', 'MonetaryValue' => opts[:freight_charge].to_s)
+        multi_valued('FreightCharges',
+                     'MonetaryValue' => opts[:freight_charge].to_s)
       end
 
       def discount

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'uri'
 require 'excon'
 require 'digest/md5'
@@ -41,7 +43,7 @@ module UPS
     #   requests to the UPS URL
     def initialize(params = {})
       params = DEFAULT_PARAMS.merge(params)
-      self.url = (params[:test_mode]) ? TEST_URL : LIVE_URL
+      self.url = params[:test_mode] ? TEST_URL : LIVE_URL
 
       @token_data = nil
     end
@@ -120,15 +122,16 @@ module UPS
       end
 
       # Make sure we were given credentials for OAuth
-      if account_number.blank? || client_id.blank? || client_secret.blank?
-        fail Exceptions::AuthorizationError, 'Missing account_number, client_id, or client_secret'
+      if account_number.empty? || client_id.empty? || client_secret.empty?
+        fail Exceptions::AuthorizationError,
+             'Missing account_number, client_id, or client_secret'
       end
 
       self.account_number = account_number
       self.client_id = client_id
       self.client_secret = client_secret
 
-      create_token()
+      create_token
     end
 
     private
@@ -143,7 +146,7 @@ module UPS
     # @param [Optional, String] body The body to send with the request
     # @return [Excon::Response] The response from the request
     def get_response(path, body = {})
-      access_token = get_access_token()
+      access_token = get_access_token
 
       headers = {
         'Content-Type' => 'application/json',
@@ -169,9 +172,9 @@ module UPS
     # Creates a new access token
     #
     # @return [void]
-    def create_token()
-      full_url = url + '/security/v1/oauth/token'
-      auth = 'Basic ' + Base64.strict_encode64("#{client_id}:#{client_secret}")
+    def create_token
+      full_url = "#{url}/security/v1/oauth/token"
+      auth = "Basic #{Base64.strict_encode64("#{client_id}:#{client_secret}")}"
 
       params = {
         'grant_type' => 'client_credentials'
@@ -193,13 +196,14 @@ module UPS
         else
           raise "Unexpected response status: #{response.status}"
         end
-
       rescue Excon::Errors::Timeout
         fail Exceptions::AuthorizationError, 'Token creation request timed out'
       rescue Excon::Errors::SocketError
-        fail Exceptions::AuthorizationError, 'Token creation request failed due to socket error'
-      rescue => e
-        fail Exceptions::AuthorizationError, "Token creation request failed: #{e.message}"
+        fail Exceptions::AuthorizationError,
+             'Token creation request failed due to socket error'
+      rescue StandardError => e
+        fail Exceptions::AuthorizationError,
+             "Token creation request failed: #{e.message}"
       end
     end
 
@@ -208,8 +212,8 @@ module UPS
     # @param [String] refresh_token Refresh token to use for the request
     # @return [void]
     def refresh_token(refresh_token)
-      full_url = url + '/security/v1/oauth/refresh'
-      auth = 'Basic ' + Base64.strict_encode64("#{client_id}:#{client_secret}")
+      full_url = "#{url}/security/v1/oauth/refresh"
+      auth = "Basic #{Base64.strict_encode64("#{client_id}:#{client_secret}")}"
 
       params = {
         'grant_type' => 'refresh_token',
@@ -231,22 +235,24 @@ module UPS
         else
           raise "Unexpected response status: #{response.status}"
         end
-
       rescue Excon::Errors::Timeout
         fail Exceptions::AuthorizationError, 'Token refresh request timed out'
       rescue Excon::Errors::SocketError
-        fail Exceptions::AuthorizationError, 'Token refresh request failed due to socket error'
-      rescue => e
-        fail Exceptions::AuthorizationError, "Token refresh request failed: #{e.message}"
+        fail Exceptions::AuthorizationError,
+             'Token refresh request failed due to socket error'
+      rescue StandardError => e
+        fail Exceptions::AuthorizationError,
+             "Token refresh request failed: #{e.message}"
       end
     end
 
     # Retrieves the access token, or refreshes it if it has expired
     #
     # @return [String] The access token
-    def get_access_token()
+    def get_access_token
       if @token_data.nil?
-        fail Exceptions::AuthorizationError, 'No token data found, please call authorize first'
+        fail Exceptions::AuthorizationError,
+             'No token data found, please call authorize first'
       end
 
       issued_at = @token_data['issued_at'].to_i

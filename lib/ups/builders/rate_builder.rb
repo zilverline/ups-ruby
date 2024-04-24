@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UPS
   module Builders
     # The {RateBuilder} class builds UPS XML Rate Objects.

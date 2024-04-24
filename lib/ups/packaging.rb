@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UPS
   PACKAGING = {
     '00' => 'UNKNOWN',
@@ -12,5 +14,5 @@ module UPS
     '2a' => 'Small Express Box',
     '2b' => 'Medium Express Box',
     '2c' => 'Large Express Box'
-  }
+  }.freeze
 end

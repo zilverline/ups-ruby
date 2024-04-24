@@ -10,24 +10,43 @@ PATH
 GEM
   remote: http://rubygems.org/
   specs:
+    activesupport (7.1.3.2)
+      base64
+      bigdecimal
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      connection_pool (>= 2.2.5)
+      drb
+      i18n (>= 1.6, < 2)
+      minitest (>= 5.1)
+      mutex_m
+      tzinfo (~> 2.0)
     ast (2.4.2)
+    base64 (0.2.0)
+    bigdecimal (3.1.7)
     codeclimate-test-reporter (1.0.9)
       simplecov (<= 0.13)
+    concurrent-ruby (1.2.3)
+    connection_pool (2.4.1)
     docile (1.1.5)
+    drb (2.2.1)
     excon (0.110.0)
     ffi (1.16.3)
+    i18n (1.14.4)
+      concurrent-ruby (~> 1.0)
     insensitive_hash (0.3.3)
     json (2.7.2)
     language_server-protocol (3.17.0.3)
     levenshtein-ffi (1.1.0)
       ffi (~> 1.9)
     minitest (5.22.3)
+    mutex_m (0.2.0)
     ox (2.14.18)
     parallel (1.24.0)
     parser (3.3.0.5)
       ast (~> 2.4.1)
       racc
     racc (1.7.3)
+    rack (3.0.10)
     rainbow (3.1.1)
     rake (13.2.1)
     regexp_parser (2.9.0)
@@ -45,12 +64,19 @@ GEM
       unicode-display_width (>= 2.4.0, < 3.0)
     rubocop-ast (1.31.2)
       parser (>= 3.3.0.4)
+    rubocop-rails (2.24.1)
+      activesupport (>= 4.2.0)
+      rack (>= 1.1)
+      rubocop (>= 1.33.0, < 2.0)
+      rubocop-ast (>= 1.31.1, < 2.0)
     ruby-progressbar (1.13.0)
     simplecov (0.13.0)
       docile (~> 1.1.0)
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.2)
+    tzinfo (2.0.6)
+      concurrent-ruby (~> 1.0)
     unicode-display_width (2.5.0)
 
 PLATFORMS
@@ -61,6 +87,7 @@ DEPENDENCIES
   minitest
   rake
   rubocop
+  rubocop-rails
   simplecov
   ups-ruby!
 

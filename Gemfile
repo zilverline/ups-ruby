@@ -3,6 +3,7 @@ gemspec
 
 group :development, :test do
   gem 'rubocop', require: false
+  gem 'rubocop-rails', require: false
   gem 'simplecov'
   gem 'codeclimate-test-reporter', '~> 1.0.0'
   gem 'rake'

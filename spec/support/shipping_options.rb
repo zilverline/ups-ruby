@@ -1,9 +1,12 @@
+# frozen_string_literal: true
+
 module ShippingOptions
   def shipper
     {
       company_name: 'Veeqo Limited',
       attention_name: 'Walter White',
       phone_number: '01792 123456',
+      email_address: 'walterwhite@bb.com',
       address_line_1: '11 Wind Street',
       city: 'Swansea',
       state: 'Wales',

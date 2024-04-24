@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UPS
   module Builders
     # The {OrganisationBuilder} class builds UPS JSON Organization Objects.
@@ -50,7 +52,8 @@ module UPS
       #
       # @return [Hash] JSON representation of tax identification number
       def tax_identification_number
-        element_with_value('TaxIdentificationNumber', opts[:sender_tax_number] || '')
+        element_with_value('TaxIdentificationNumber',
+                           opts[:sender_tax_number] || '')
       end
 
       # Returns an JSON representation of address

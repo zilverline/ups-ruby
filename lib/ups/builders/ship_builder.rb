@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UPS
   module Builders
     # The {ShipBuilder} class builds UPS JSON Ship Objects.
@@ -87,7 +89,7 @@ module UPS
       end
 
       def label_image_format(format)
-        code_description 'LabelImageFormat', "#{format}", "#{format}"
+        code_description 'LabelImageFormat', format.to_s, format.to_s
       end
 
       def label_stock_size(size)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UPS
   module Builders
     # The {InternationalProductInvoiceBuilder} class builds UPS XML International invoice Produt Objects.
