@@ -13,6 +13,9 @@ class UPS::Builders::TestShipBuilder < Minitest::Test
       builder.add_international_invoice invoice_form
       builder.add_description 'Los Pollo Hermanos'
       builder.add_reference_number reference_number
+      builder.add_return_service '10'
+      builder.add_usps_endorsement '1'
+      builder.add_package_id '1234'
       builder.add_shipment_delivery_confirmation '2'
       builder.add_shipment_direct_delivery_only
       builder.add_invoice_line_total('12', "GBP")
@@ -64,6 +67,18 @@ class UPS::Builders::TestShipBuilder < Minitest::Test
 
   def test_has_correct_reference_number
     assert_equal reference_number[:code], @ship_builder.as_json['ShipmentRequest']['Shipment']['ReferenceNumber']['Code']
+  end
+
+  def test_has_correct_return_service
+    assert_equal '10', @ship_builder.as_json['ShipmentRequest']['Shipment']['ReturnService']['Code']
+  end
+
+  def test_has_correct_usps_endorsement
+    assert_equal '1', @ship_builder.as_json['ShipmentRequest']['Shipment']['USPSEndorsement']
+  end
+
+  def test_has_correct_package_id
+    assert_equal '1234', @ship_builder.as_json['ShipmentRequest']['Shipment']['PackageID']
   end
 
   def test_has_correct_delivery_confirmation

@@ -9,6 +9,7 @@ class UPS::Builders::TestRateBuilder < Minitest::Test
       builder.add_ship_to ship_to
       builder.add_ship_from shipper
       builder.add_package package
+      builder.add_return_service '10'
       builder.add_shipment_delivery_confirmation '2'
       builder.add_shipment_direct_delivery_only
     end
@@ -36,6 +37,10 @@ class UPS::Builders::TestRateBuilder < Minitest::Test
 
   def test_has_correct_package_weight
     assert_equal package[:weight], @rate_builder.as_json['RateRequest']['Shipment']['Package'][0]['PackageWeight']['Weight']
+  end
+
+  def test_has_correct_return_service
+    assert_equal '10', @rate_builder.as_json['RateRequest']['Shipment']['ShipmentServiceOptions']['ReturnService']['Code']
   end
 
   def test_has_correct_delivery_confirmation
