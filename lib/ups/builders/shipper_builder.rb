@@ -2,11 +2,11 @@
 
 module UPS
   module Builders
-    # The {ShipperBuilder} class builds UPS XML Organization Objects.
+    # The {ShipperBuilder} class builds UPS Organization Objects.
     #
     # @author Paul Trippett
     # @since 0.1.0
-    # @attr [String] name The Containing XML Element Name
+    # @attr [String] name The Containing Element Name
     # @attr [Hash] opts The Shipper and Address Parts
     class ShipperBuilder < BuilderBase
       attr_accessor :name, :opts

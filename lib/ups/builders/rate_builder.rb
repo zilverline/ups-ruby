@@ -2,7 +2,7 @@
 
 module UPS
   module Builders
-    # The {RateBuilder} class builds UPS XML Rate Objects.
+    # The {RateBuilder} class builds UPS Rate Objects.
     #
     # @author Paul Trippett
     # @since 0.1.0

@@ -82,7 +82,7 @@ module UPS
         shipment_root.merge!(multi_valued('ReturnService', 'Code' => service_code.to_s))
       end
 
-      # Adds USPSEndorsement to XML document being built
+      # Adds USPSEndorsement to JSON body being built
       #
       # @param [String] endorsement_code The code for endorsement type
       # @return [void]
@@ -90,7 +90,7 @@ module UPS
         shipment_root.merge!(element_with_value('USPSEndorsement', endorsement_code.to_s))
       end
 
-      # Adds PackageID to XML document being built
+      # Adds PackageID to JSON body being built
       #
       # @param [String] package_id Customer-assigned unique piece identifier that returns visibility events
       # @return [void]

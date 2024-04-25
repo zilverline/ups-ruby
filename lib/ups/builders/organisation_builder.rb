@@ -6,7 +6,7 @@ module UPS
     #
     # @author Paul Trippett
     # @since 0.1.0
-    # @attr [String] name The Containing XML Element Name
+    # @attr [String] name The Containing Element Name
     # @attr [Hash] opts The Organization and Address Parts
     class OrganisationBuilder < BuilderBase
       attr_accessor :name, :opts

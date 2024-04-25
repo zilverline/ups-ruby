@@ -2,7 +2,7 @@
 
 module UPS
   module Builders
-    # The {InternationalProductInvoiceBuilder} class builds UPS XML International invoice Produt Objects.
+    # The {InternationalProductInvoiceBuilder} class builds UPS International invoice Produt Objects.
     #
     # @author Calvin Hughes
     # @since 0.9.3
