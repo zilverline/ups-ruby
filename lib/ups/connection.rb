@@ -27,10 +27,12 @@ module UPS
     RATE_VERSION = 'v2403'
     SHIP_VERSION = 'v2403'
     TRACK_VERSION = 'v1'
+    LABEL_VERSION = 'v1'
 
     RATE_PATH = "/api/rating/#{RATE_VERSION}/Rate"
     SHIP_PATH = "/api/shipments/#{SHIP_VERSION}/ship"
     TRACK_PATH = "/api/track/#{TRACK_VERSION}/details"
+    LABEL_PATH = "/api/labels/#{LABEL_VERSION}/recovery"
 
     DEFAULT_PARAMS = {
       test_mode: false
@@ -99,6 +101,26 @@ module UPS
       UPS::Parsers::TrackParser.new(response.body)
     end
 
+    # Makes a request for a label of a shipment.
+    #
+    # A pre-configured {Builders::LabelRecoveryRequestBuilder} object can be passed as the first
+    # option or a block yielded to configure a new {Builders::LabelRecoveryRequestBuilder}
+    # object.
+    #
+    # @param [Builders::LabelRecoveryRequestBuilder] track_builder A pre-configured
+    #   {Builders::LabelRecoveryRequestBuilder} object to use
+    # @yield [track_builder] A LabelRecoveryRequestBuilder object for configuring
+    #   the label request information sent
+    def label(label_builder = nil)
+      if label_builder.nil? && block_given?
+        label_builder = UPS::Builders::LabelRecoveryRequestBuilder.new
+        yield label_builder
+      end
+
+      response = get_response(LABEL_PATH, label_builder.as_json)
+      UPS::Parsers::LabelParser.new(response.body)
+    end
+
     # Authorizes the connection with the UPS API
     #
     # @param [String] account_number Account number to use for the request
@@ -132,6 +154,27 @@ module UPS
       self.client_secret = client_secret
 
       create_token
+    end
+
+    # Retrieves the access token, or refreshes it if it has expired
+    #
+    # @return [String] The access token
+    def get_access_token
+      if @token_data.nil?
+        fail Exceptions::AuthorizationError,
+             'No token data found, please call authorize first'
+      end
+
+      issued_at = @token_data['issued_at'].to_i
+      expires_in = @token_data['expires_in'].to_i
+      current_time = Time.now.to_i
+
+      # Token is expired, refresh it
+      if issued_at + expires_in <= current_time
+        refresh_token(@token_data['refresh_token'])
+      end
+
+      @token_data['access_token']
     end
 
     private
@@ -244,27 +287,6 @@ module UPS
         fail Exceptions::AuthorizationError,
              "Token refresh request failed: #{e.message}"
       end
-    end
-
-    # Retrieves the access token, or refreshes it if it has expired
-    #
-    # @return [String] The access token
-    def get_access_token
-      if @token_data.nil?
-        fail Exceptions::AuthorizationError,
-             'No token data found, please call authorize first'
-      end
-
-      issued_at = @token_data['issued_at'].to_i
-      expires_in = @token_data['expires_in'].to_i
-      current_time = Time.now.to_i
-
-      # Token is expired, refresh it
-      if issued_at + expires_in <= current_time
-        refresh_token(@token_data['refresh_token'])
-      end
-
-      @token_data['access_token']
     end
   end
 end

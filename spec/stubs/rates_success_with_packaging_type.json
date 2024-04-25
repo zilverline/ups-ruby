@@ -1,0 +1,144 @@
+{
+  "RateResponse": {
+    "RatedShipment": [
+      {
+        "Service": {
+          "Code": "07"
+        },
+        "BillingWeight": {
+          "UnitOfMeasurement": {
+            "Code": "KGS"
+          },
+          "Weight": "8.0"
+        },
+        "TransportationCharges": {
+          "CurrencyCode": "GBP",
+          "MonetaryValue": "172.77"
+        },
+        "ServiceOptionsCharges": {
+          "CurrencyCode": "GBP",
+          "MonetaryValue": "0.00"
+        },
+        "TotalCharges": {
+          "CurrencyCode": "GBP",
+          "MonetaryValue": "172.77"
+        },
+        "RatedPackage": [
+          {
+            "TransportationCharges": {
+              "CurrencyCode": "GBP",
+              "MonetaryValue": "172.77"
+            },
+            "ServiceOptionsCharges": {
+              "CurrencyCode": "GBP",
+              "MonetaryValue": "0.00"
+            },
+            "TotalCharges": {
+              "CurrencyCode": "GBP",
+              "MonetaryValue": "172.77"
+            },
+            "BillingWeight": {
+              "UnitOfMeasurement": {
+                "Code": "KGS"
+              },
+              "Weight": "8.0"
+            },
+            "Weight": "8.0"
+          }
+        ]
+      },
+      {
+        "Service": {
+          "Code": "65"
+        },
+        "BillingWeight": {
+          "UnitOfMeasurement": {
+            "Code": "KGS"
+          },
+          "Weight": "8.0"
+        },
+        "TransportationCharges": {
+          "CurrencyCode": "GBP",
+          "MonetaryValue": "162.38"
+        },
+        "ServiceOptionsCharges": {
+          "CurrencyCode": "GBP",
+          "MonetaryValue": "0.00"
+        },
+        "TotalCharges": {
+          "CurrencyCode": "GBP",
+          "MonetaryValue": "162.38"
+        },
+        "RatedPackage": [
+          {
+            "TransportationCharges": {
+              "CurrencyCode": "GBP",
+              "MonetaryValue": "162.38"
+            },
+            "ServiceOptionsCharges": {
+              "CurrencyCode": "GBP",
+              "MonetaryValue": "0.00"
+            },
+            "TotalCharges": {
+              "CurrencyCode": "GBP",
+              "MonetaryValue": "162.38"
+            },
+            "BillingWeight": {
+              "UnitOfMeasurement": {
+                "Code": "KGS"
+              },
+              "Weight": "8.0"
+            },
+            "Weight": "8.0"
+          }
+        ]
+      },
+      {
+        "Service": {
+          "Code": "54"
+        },
+        "BillingWeight": {
+          "UnitOfMeasurement": {
+            "Code": "KGS"
+          },
+          "Weight": "8.0"
+        },
+        "TransportationCharges": {
+          "CurrencyCode": "GBP",
+          "MonetaryValue": "229.18"
+        },
+        "ServiceOptionsCharges": {
+          "CurrencyCode": "GBP",
+          "MonetaryValue": "0.00"
+        },
+        "TotalCharges": {
+          "CurrencyCode": "GBP",
+          "MonetaryValue": "229.18"
+        },
+        "RatedPackage": [
+          {
+            "TransportationCharges": {
+              "CurrencyCode": "GBP",
+              "MonetaryValue": "229.18"
+            },
+            "ServiceOptionsCharges": {
+              "CurrencyCode": "GBP",
+              "MonetaryValue": "0.00"
+            },
+            "TotalCharges": {
+              "CurrencyCode": "GBP",
+              "MonetaryValue": "229.18"
+            },
+            "BillingWeight": {
+              "UnitOfMeasurement": {
+                "Code": "KGS"
+              },
+              "Weight": "8.0"
+            },
+            "Weight": "8.0"
+          }
+        ]
+      }
+    ]
+  }
+}

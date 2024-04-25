@@ -1,0 +1,20 @@
+{
+  "RateResponse": {
+    "Response": {
+      "ResponseStatus": {
+        "StatusCode": "0",
+        "StatusDescription": "Failure"
+      },
+      "Alert": [
+        {
+          "Code": "111219",
+          "Description": "The requested service is unavailable between the selected locations. Please check your Documents Only, Letter/Envelope, and Saturday Delivery settings as these may affect service availability."
+        },
+        {
+          "Code": "111031",
+          "Description": "Packages must weigh more than zero kg."
+        }
+      ]
+    }
+  }
+}

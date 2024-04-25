@@ -14,6 +14,16 @@ module UPS
 
         add_request 'Shop'
       end
+
+      # Adds ReturnService to JSON body being built
+      #
+      # @param [String] service_code The code for Return Service type
+      # @return [void]
+      def add_return_service(service_code, service_description = '')
+        shipment_service_options.merge!(code_description('ReturnService',
+                                                         service_code,
+                                                         service_description))
+      end
     end
   end
 end

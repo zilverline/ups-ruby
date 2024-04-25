@@ -1,5 +1,6 @@
+# frozen_string_literal: true
+
 require 'uri'
-require 'ox'
 
 module UPS
   module Parsers
@@ -10,12 +11,11 @@ module UPS
         @rate = rate
       end
 
-      def to_h
+      def as_json
         {
           service_code: rate_service_code,
           service_name: rate_service_name,
-          warnings:     rate_warnings,
-          total:        rate_total
+          total: rate_total
         }
       end
 
@@ -30,21 +30,21 @@ module UPS
       private
 
       def rate_total
-        return total_charges[:MonetaryValue] unless negotiated_rates
+        unless negotiated_rates
+          return {
+            currency: total_charges[:CurrencyCode],
+            amount: total_charges[:MonetaryValue]
+          }
+        end
 
-        negotiated_rates[:NetSummaryCharges][:GrandTotal][:MonetaryValue]
-      end
-
-      def rate_warnings
-        rated_shipment_warning.is_a?(Array) ? rated_shipment_warning : [rated_shipment_warning]
+        {
+          currency: negotiated_rates[:TotalCharge][:CurrencyCode],
+          amount: negotiated_rates[:TotalCharge][:MonetaryValue]
+        }
       end
 
       def rate_service
         rate[:Service]
-      end
-
-      def rated_shipment_warning
-        rate[:RatedShipmentWarning]
       end
 
       def total_charges
@@ -52,7 +52,7 @@ module UPS
       end
 
       def negotiated_rates
-        rate[:NegotiatedRates]
+        rate[:NegotiatedRateCharges]
       end
     end
   end

@@ -1,0 +1,16 @@
+{
+  "ShipmentResponse": {
+    "Response": {
+      "ResponseStatus": {
+        "Code": "0",
+        "Description": "Failure"
+      },
+      "Alert": [
+        {
+          "Code": "11376",
+          "Description": "Missing or invalid shipper number."
+        }
+      ]
+    }
+  }
+}

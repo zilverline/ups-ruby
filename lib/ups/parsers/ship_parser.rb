@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'base64'
 require 'tempfile'
 
@@ -20,6 +22,14 @@ module UPS
         packages[0].label_html_image
       end
 
+      def has_form_graphic?
+        packages[0].form != nil
+      end
+
+      def form_graphic
+        packages[0].form
+      end
+
       alias_method :graphic_extension, :label_graphic_extension
       alias_method :graphic_image, :label_graphic_image
       alias_method :html_image, :label_html_image
@@ -33,24 +43,17 @@ module UPS
       def form_graphic_image
         return unless has_form_graphic?
 
-        Utils.base64_to_file(form_graphic[:Image][:GraphicImage], form_graphic_extension)
+        Utils.base64_to_file(form_graphic[:Image][:GraphicImage],
+                             form_graphic_extension)
       end
 
       def packages
-        return package_results.map { |package_result| UPS::Models::PackageResult.new(package_result) } if package_results.is_a?(Array)
-
-        [UPS::Models::PackageResult.new(package_results)]
+        package_results.map do |package_result|
+          UPS::Models::PackageResult.new(package_result)
+        end
       end
 
       private
-
-      def form_graphic
-        shipment_results[:Form]
-      end
-
-      def has_form_graphic?
-        shipment_results.key?(:Form)
-      end
 
       def package_results
         shipment_results[:PackageResults]

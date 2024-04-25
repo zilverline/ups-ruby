@@ -19,7 +19,7 @@ describe UPS::Connection do
       Excon.stub({:method => :post}) do |params|
         case params[:path]
         when UPS::Connection::RATE_PATH
-          {body: File.read("#{stub_path}/rates_negotiated_success.xml"), status: 200}
+          { body: File.read("#{stub_path}/rates_negotiated_success.json"), status: 200 }
         end
       end
     end
@@ -35,33 +35,40 @@ describe UPS::Connection do
       end
     end
 
-    it "should return neotiated rates" do
+    it "should return negotiated rates" do
       expect(subject.rated_shipments).wont_be_empty
       expect(subject.rated_shipments).must_equal [
         {
-          :service_code=>"11",
-          :service_name=>"UPS Standard",
-          :warnings=>["Your invoice may vary from the displayed reference rates"],
-          :total=>"24.78"
-
+          service_code: '11',
+          service_name: 'UPS Standard',
+          total: {
+            currency: 'GBP',
+            amount: '24.78'
+          }
         },
         {
-          :service_code=>"65",
-          :service_name=>"UPS Saver",
-          :warnings=>["Your invoice may vary from the displayed reference rates"],
-          :total=>"45.15"
+          service_code: '65',
+          service_name: 'UPS Saver',
+          total: {
+            currency: 'GBP',
+            amount: '45.15'
+          }
         },
         {
-          :service_code=>"54",
-          :service_name=>"Express Plus",
-          :warnings=>["Your invoice may vary from the displayed reference rates"],
-          :total=>"80.89"
+          service_code: '54',
+          service_name: 'Express Plus',
+          total: {
+            currency: 'GBP',
+            amount: '80.89'
+          }
         },
         {
-          :service_code=>"07",
-          :service_name=>"Express",
-          :warnings=>["Your invoice may vary from the displayed reference rates"],
-          :total=>"47.08"
+          service_code: '07',
+          service_name: 'Express',
+          total: {
+            currency: 'GBP',
+            amount: '47.08'
+          }
         }
       ]
     end

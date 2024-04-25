@@ -30,8 +30,8 @@ describe UPS::Connection do
       end
 
       it 'returns the tracking status' do
-        expect(subject.to_h).wont_be_empty
-        expect(subject.to_h).must_equal(
+        expect(subject.as_json).wont_be_empty
+        expect(subject.as_json).must_equal(
           status_date: Date.parse('2010-06-10'),
           status_type_description: 'DELIVERED',
           status_type_code: 'D'

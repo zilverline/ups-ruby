@@ -1,10 +1,11 @@
+# frozen_string_literal: true
+
 module UPS
   module Parsers
     class RatesParser < BaseParser
-
       def rated_shipments
         rates.map do |rated_shipment|
-          RateParser.new(rated_shipment).to_h
+          RateParser.new(rated_shipment).as_json
         end
       end
 
@@ -15,7 +16,7 @@ module UPS
       end
 
       def root_response
-        parsed_response[:RatingServiceSelectionResponse]
+        parsed_response[:RateResponse]
       end
     end
   end

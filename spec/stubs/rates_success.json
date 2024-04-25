@@ -1,0 +1,98 @@
+{
+  "RateResponse": {
+    "RatedShipment": [
+      {
+        "Service": {
+          "Code": "11"
+        },
+        "BillingWeight": {
+          "UnitOfMeasurement": {
+            "Code": "KGS"
+          },
+          "Weight": "0.5"
+        },
+        "TransportationCharges": {
+          "CurrencyCode": "GBP",
+          "MonetaryValue": "25.03"
+        },
+        "ServiceOptionsCharges": {
+          "CurrencyCode": "GBP",
+          "MonetaryValue": "0.00"
+        },
+        "TotalCharges": {
+          "CurrencyCode": "GBP",
+          "MonetaryValue": "25.03"
+        }
+      },
+      {
+        "Service": {
+          "Code": "65"
+        },
+        "BillingWeight": {
+          "UnitOfMeasurement": {
+            "Code": "KGS"
+          },
+          "Weight": "0.5"
+        },
+        "TransportationCharges": {
+          "CurrencyCode": "GBP",
+          "MonetaryValue": "45.82"
+        },
+        "ServiceOptionsCharges": {
+          "CurrencyCode": "GBP",
+          "MonetaryValue": "0.00"
+        },
+        "TotalCharges": {
+          "CurrencyCode": "GBP",
+          "MonetaryValue": "45.82"
+        }
+      },
+      {
+        "Service": {
+          "Code": "54"
+        },
+        "BillingWeight": {
+          "UnitOfMeasurement": {
+            "Code": "KGS"
+          },
+          "Weight": "0.5"
+        },
+        "TransportationCharges": {
+          "CurrencyCode": "GBP",
+          "MonetaryValue": "82.08"
+        },
+        "ServiceOptionsCharges": {
+          "CurrencyCode": "GBP",
+          "MonetaryValue": "0.00"
+        },
+        "TotalCharges": {
+          "CurrencyCode": "GBP",
+          "MonetaryValue": "82.08"
+        }
+      },
+      {
+        "Service": {
+          "Code": "07"
+        },
+        "BillingWeight": {
+          "UnitOfMeasurement": {
+            "Code": "KGS"
+          },
+          "Weight": "0.5"
+        },
+        "TransportationCharges": {
+          "CurrencyCode": "GBP",
+          "MonetaryValue": "47.77"
+        },
+        "ServiceOptionsCharges": {
+          "CurrencyCode": "GBP",
+          "MonetaryValue": "0.00"
+        },
+        "TotalCharges": {
+          "CurrencyCode": "GBP",
+          "MonetaryValue": "47.77"
+        }
+      }
+    ]
+  }
+}

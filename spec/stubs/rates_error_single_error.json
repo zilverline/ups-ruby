@@ -1,0 +1,16 @@
+{
+  "RateResponse": {
+    "Response": {
+      "ResponseStatus": {
+        "StatusCode": "0",
+        "StatusDescription": "Failure"
+      },
+      "Alert": [
+        {
+          "Code": "111219",
+          "Description": "Missing or invalid shipper number."
+        }
+      ]
+    }
+  }
+}

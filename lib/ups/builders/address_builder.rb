@@ -75,7 +75,14 @@ module UPS
       #
       # @return [Hash] JSON representation of main address line
       def address_line_1
-        element_with_value('AddressLine', opts[:address_line_1][0..34])
+        opts[:address_line_1][0..34]
+      end
+
+      # Returns JSON representation of secondary address line
+      #
+      # @return [Hash] JSON representation of secondary address line
+      def address_line_2
+        opts[:address_line_2][0..34]
       end
 
       # Returns JSON representation of city
@@ -111,9 +118,20 @@ module UPS
       # @return [Hash] JSON representation of the full address
       def as_json
         addr = element_with_value('Address', {})
-        addr['Address'].merge!(address_line_1,
-                               city,
+        addr['Address'].merge!(city,
                                country)
+
+        addr_lines = []
+        if opts[:address_line_1]
+          addr_lines << address_line_1
+        end
+        if opts[:address_line_2]
+          addr_lines << address_line_2
+        end
+
+        if addr_lines.any?
+          addr['Address'].merge!(element_with_value('AddressLine', addr_lines))
+        end
 
         if opts[:state]
           addr['Address'].merge!(state)

@@ -1,0 +1,29 @@
+{
+  "RateResponse": {
+    "RatedShipment": [
+      {
+        "Service": {
+          "Code": "11"
+        },
+        "BillingWeight": {
+          "UnitOfMeasurement": {
+            "Code": "KGS"
+          },
+          "Weight": "0.5"
+        },
+        "TransportationCharges": {
+          "CurrencyCode": "GBP",
+          "MonetaryValue": "25.03"
+        },
+        "ServiceOptionsCharges": {
+          "CurrencyCode": "GBP",
+          "MonetaryValue": "0.00"
+        },
+        "TotalCharges": {
+          "CurrencyCode": "GBP",
+          "MonetaryValue": "25.03"
+        }
+      }
+    ]
+  }
+}

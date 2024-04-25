@@ -32,7 +32,7 @@ describe UPS::Connection do
         Excon.stub(method: :post) do |params|
           case params[:path]
           when UPS::Connection::RATE_PATH
-            { body: File.read("#{stub_path}/rates_success.xml"), status: 200 }
+            { body: File.read("#{stub_path}/rates_success.json"), status: 200 }
           end
         end
       end
@@ -41,31 +41,36 @@ describe UPS::Connection do
         expect(subject.rated_shipments).wont_be_empty
         expect(subject.rated_shipments).must_equal [
           {
-            :service_code=>"11",
-            :service_name=>"UPS Standard",
-            :warnings=>[
-              "Your invoice may vary from the displayed reference rates",
-              "Ship To Address Classification is changed from Commercial to Residential"
-            ],
-            :total=>"25.03"
+            service_code: '11',
+            service_name: 'UPS Standard',
+            total: {
+              currency: 'GBP',
+              amount: '25.03'
+            }
           },
           {
-            :service_code=>"65",
-            :service_name=>"UPS Saver",
-            :warnings=>["Your invoice may vary from the displayed reference rates"],
-            :total=>"45.82"
+            service_code: '65',
+            service_name: 'UPS Saver',
+            total: {
+              currency: 'GBP',
+              amount: '45.82'
+            }
           },
           {
-            :service_code=>"54",
-            :service_name=>"Express Plus",
-            :warnings=>["Your invoice may vary from the displayed reference rates"],
-            :total=>"82.08"
+            service_code: '54',
+            service_name: 'Express Plus',
+            total: {
+              currency: 'GBP',
+              amount: '82.08'
+            }
           },
           {
-            :service_code=>"07",
-            :service_name=>"Express",
-            :warnings=>["Your invoice may vary from the displayed reference rates"],
-            :total=>"47.77"
+            service_code: '07',
+            service_name: 'Express',
+            total: {
+              currency: 'GBP',
+              amount: '47.77'
+            }
           }
         ]
       end
@@ -75,7 +80,7 @@ describe UPS::Connection do
           Excon.stub(method: :post) do |params|
             case params[:path]
             when UPS::Connection::RATE_PATH
-              { body: File.read("#{stub_path}/rates_success_single_rate.xml"), status: 200 }
+              { body: File.read("#{stub_path}/rates_success_single_rate.json"), status: 200 }
             end
           end
         end
@@ -84,13 +89,12 @@ describe UPS::Connection do
           expect(subject.rated_shipments).wont_be_empty
           expect(subject.rated_shipments).must_equal [
             {
-              :service_code=>"11",
-              :service_name=>"UPS Standard",
-              :warnings=>[
-                "Your invoice may vary from the displayed reference rates",
-                "Ship To Address Classification is changed from Commercial to Residential"
-              ],
-              :total=>"25.03"
+              service_code: '11',
+              service_name: 'UPS Standard',
+              total: {
+                currency: 'GBP',
+                amount: '25.03'
+              }
             }
           ]
         end
@@ -104,7 +108,7 @@ describe UPS::Connection do
         Excon.stub(method: :post) do |params|
           case params[:path]
           when UPS::Connection::RATE_PATH
-            { body: File.read("#{stub_path}/rates_success_with_packaging_type.xml"), status: 200 }
+            { body: File.read("#{stub_path}/rates_success_with_packaging_type.json"), status: 200 }
           end
         end
       end
@@ -115,75 +119,26 @@ describe UPS::Connection do
             {
               service_code: '07',
               service_name: 'Express',
-              warnings: [
-                ' The weight exceeds the limit for the UPS Letter/Envelope rate and will be rated using the weight. ',
-                ' Your invoice may vary from the displayed reference rates '
-              ],
-              total: '171.04'
+              total: {
+                currency: 'GBP',
+                amount: '172.77'
+              }
             },
             {
               service_code: '65',
               service_name: 'UPS Saver',
-              warnings: [
-                ' The weight exceeds the limit for the UPS Letter/Envelope rate and will be rated using the weight. ',
-                ' Your invoice may vary from the displayed reference rates '
-              ],
-              total: '160.76'
+              total: {
+                currency: 'GBP',
+                amount: '162.38'
+              }
             },
             {
               service_code: '54',
               service_name: 'Express Plus',
-              warnings: [
-                ' The weight exceeds the limit for the UPS Letter/Envelope rate and will be rated using the weight. ',
-                ' Your invoice may vary from the displayed reference rates '
-              ],
-              total: '226.89'
-            }
-          ]
-      end
-    end
-
-    describe 'when both ups packaging type and dimensions are specified' do
-      let(:supplied_package) { package_with_carrier_packaging }
-
-      before do
-        Excon.stub(method: :post) do |params|
-          case params[:path]
-          when UPS::Connection::RATE_PATH
-            { body: File.read("#{stub_path}/rates_success_with_packaging_type_and_dimensions.xml"), status: 200 }
-          end
-        end
-      end
-
-      it 'returns rates' do
-        expect(subject.rated_shipments).wont_be_empty
-          expect(subject.rated_shipments).must_equal [
-            {
-              service_code: '07',
-              service_name: 'Express',
-              warnings: [
-                ' The weight exceeds the limit for the UPS Letter/Envelope rate and will be rated using the weight. ',
-                ' Your invoice may vary from the displayed reference rates '
-              ],
-              total: '170.27'
-            },
-            {
-              service_code: '65',
-              service_name: 'UPS Saver',
-              warnings: [
-                ' The weight exceeds the limit for the UPS Letter/Envelope rate and will be rated using the weight. ',
-                ' Your invoice may vary from the displayed reference rates '
-              ],
-              total: '160.76'
-            },
-            {
-              service_code: '54',
-              service_name: 'Express Plus',
-              warnings: [
-                ' The weight exceeds the limit for the UPS Letter/Envelope rate and will be rated using the weight. ',
-                ' Your invoice may vary from the displayed reference rates '
-              ],
-              total: '226.89'
+              total: {
+                currency: 'GBP',
+                amount: '229.18'
+              }
             }
           ]
       end
@@ -195,7 +150,7 @@ describe UPS::Connection do
           Excon.stub(method: :post) do |params|
             case params[:path]
             when UPS::Connection::RATE_PATH
-              { body: File.read("#{stub_path}/rates_error_single_error.xml"), status: 200 }
+              { body: File.read("#{stub_path}/rates_error_single_error.json"), status: 200 }
             end
           end
         end
@@ -212,7 +167,7 @@ describe UPS::Connection do
           Excon.stub(method: :post) do |params|
             case params[:path]
             when UPS::Connection::RATE_PATH
-              { body: File.read("#{stub_path}/rates_error_multi_error.xml"), status: 200 }
+              { body: File.read("#{stub_path}/rates_error_multi_error.json"), status: 200 }
             end
           end
         end

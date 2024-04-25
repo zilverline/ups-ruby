@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'uri'
 require 'ox'
 require 'json'
@@ -16,11 +18,11 @@ module UPS
       end
 
       def status_code
-        root_response[:Response][:ResponseStatusCode]
+        root_response[:Response][:ResponseStatus][:Code]
       end
 
       def status_description
-        root_response[:Response][:ResponseStatusDescription]
+        root_response[:Response][:ResponseStatus][:Description]
       end
 
       def error_description
@@ -38,13 +40,11 @@ module UPS
       end
 
       def build_error_description(errors_node)
-        return errors_node.last[:ErrorDescription] if errors_node.is_a?(Array)
-
-        errors_node[:ErrorDescription]
+        errors_node.last[:Description]
       end
 
       def error_response
-        root_response[:Response][:Error]
+        root_response[:Response][:Alert]
       end
     end
   end

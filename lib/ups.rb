@@ -29,6 +29,7 @@ module UPS
     autoload :RateParser,          'ups/parsers/rate_parser'
     autoload :ShipParser,          'ups/parsers/ship_parser'
     autoload :TrackParser,         'ups/parsers/track_parser'
+    autoload :LabelParser,         'ups/parsers/label_parser'
   end
 
   module Builders
@@ -40,5 +41,6 @@ module UPS
     autoload :InternationalInvoiceProductBuilder, 'ups/builders/international_invoice_product_builder'
     autoload :OrganisationBuilder,                'ups/builders/organisation_builder'
     autoload :ShipperBuilder,                     'ups/builders/shipper_builder'
+    autoload :LabelRecoveryRequestBuilder,        'ups/builders/label_recovery_request_builder'
   end
 end

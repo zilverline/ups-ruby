@@ -17,4 +17,14 @@ describe UPS::Connection do
       expect(subject.url).must_equal UPS::Connection::LIVE_URL
     end
   end
+
+  describe "when trying to get access token before authorization" do
+    subject { UPS::Connection.new }
+
+    it "should raise an authorization error" do
+      assert_raises UPS::Exceptions::AuthorizationError do
+        subject.get_access_token
+      end
+    end
+  end
 end

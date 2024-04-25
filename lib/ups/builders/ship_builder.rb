@@ -20,7 +20,7 @@ module UPS
       # @return [void]
       def add_label_specification(format, size)
         root.merge!(element_with_value('LabelSpecification', {}))
-        root['LabelSpecification'].merge!(label_image_format(format),
+        root['LabelSpecification'].merge!(label_image_format(format.upcase),
                                           label_stock_size(size))
 
         if gif?(format)
@@ -72,6 +72,30 @@ module UPS
       # @return [void]
       def add_reference_number(opts = {})
         shipment_root.merge!(reference_number(opts[:code], opts[:value]))
+      end
+
+      # Adds ReturnService to JSON body being built
+      #
+      # @param [String] service_code The code for Return Service type
+      # @return [void]
+      def add_return_service(service_code)
+        shipment_root.merge!(multi_valued('ReturnService', 'Code' => service_code.to_s))
+      end
+
+      # Adds USPSEndorsement to XML document being built
+      #
+      # @param [String] endorsement_code The code for endorsement type
+      # @return [void]
+      def add_usps_endorsement(endorsement_code)
+        shipment_root.merge!(element_with_value('USPSEndorsement', endorsement_code.to_s))
+      end
+
+      # Adds PackageID to XML document being built
+      #
+      # @param [String] package_id Customer-assigned unique piece identifier that returns visibility events
+      # @return [void]
+      def add_package_id(package_id)
+        shipment_root.merge!(element_with_value('PackageID', package_id.to_s))
       end
 
       private

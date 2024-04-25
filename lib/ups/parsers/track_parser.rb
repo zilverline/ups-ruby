@@ -1,14 +1,15 @@
+# frozen_string_literal: true
+
 require 'uri'
 
 module UPS
   module Parsers
     class TrackParser < BaseParser
       def initialize(response)
-        # Unescape double/triple quoted first line: "<?xml version=\\\"1.0\\\"?>\\n<TrackResponse>\n"
         super(response.gsub(/\\"/, '"').gsub(/\\n/, "\n"))
       end
 
-      def to_h
+      def as_json
         {
           status_date: status_date,
           status_type_description: status_type_description,
@@ -35,7 +36,7 @@ module UPS
       end
 
       def latest_activity
-        activities.sort_by {|a| [a[:gmtDate], a[:gmtTime]] }.last
+        activities.max_by { |a| [a[:gmtDate], a[:gmtTime]] }
       end
 
       def activities
