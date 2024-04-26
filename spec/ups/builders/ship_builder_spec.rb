@@ -46,6 +46,10 @@ class UPS::Builders::TestShipBuilder < Minitest::Test
     assert_equal package[:weight], @ship_builder.as_json['ShipmentRequest']['Shipment']['Package'][0]['PackageWeight']['Weight']
   end
 
+  def test_has_correct_packaging_type
+    assert_equal '02', @ship_builder.as_json['ShipmentRequest']['Shipment']['Package'][0]['Packaging']['Code']
+  end
+
   def test_has_correct_label_specification
     assert_equal 'GIF', @ship_builder.as_json['ShipmentRequest']['LabelSpecification']['LabelImageFormat']['Code']
     assert_equal '100', @ship_builder.as_json['ShipmentRequest']['LabelSpecification']['LabelStockSize']['Height']

@@ -29,7 +29,7 @@ module UPS
     TRACK_VERSION = 'v1'
     LABEL_VERSION = 'v1'
 
-    RATE_PATH = "/api/rating/#{RATE_VERSION}/Rate"
+    RATE_PATH = "/api/rating/#{RATE_VERSION}/Shop"
     SHIP_PATH = "/api/shipments/#{SHIP_VERSION}/ship"
     TRACK_PATH = "/api/track/#{TRACK_VERSION}/details"
     LABEL_PATH = "/api/labels/#{LABEL_VERSION}/recovery"

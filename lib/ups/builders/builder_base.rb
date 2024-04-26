@@ -103,28 +103,8 @@ module UPS
         shipment_root.merge!(OrganisationBuilder.new('ShipFrom', opts).as_json)
       end
 
-      # Adds a Package section to the JSON body being built
+      # Adds a specific packaging type to the shipment
       #
-      # @param [Hash] opts A Hash of data to build the requested section
-      # @return [void]
-      def add_package(opts = {})
-        if shipment_root['Package'].nil?
-          shipment_root['Package'] = []
-        end
-
-        item = {}
-        item.merge!(packaging_type(opts[:packaging_type] || customer_supplied_packaging))
-        item.merge!(element_with_value('Description',
-                                       opts[:description] || 'Rate'))
-        item.merge!(package_weight(opts[:weight], opts[:unit]))
-
-        if opts[:dimensions]
-          item.merge!(package_dimensions(opts[:dimensions]))
-        end
-
-        shipment_root['Package'] << item
-      end
-
       def customer_supplied_packaging
         { code: '02', description: 'Customer Supplied Package' }
       end
@@ -163,18 +143,15 @@ module UPS
         all = element_with_value(name, {})
         all[name].merge!(root)
 
-        shipment_root.merge!({ 'ShipmentServiceOptions' => shipment_service_options })
-        all[name]['Shipment'] = shipment_root
+        if shipment_service_options.size > 0
+          shipment_root.merge!({ 'ShipmentServiceOptions' => shipment_service_options })
+        end
 
+        all[name]['Shipment'] = shipment_root
         all
       end
 
       private
-
-      def packaging_type(packaging_options_hash)
-        code_description 'Packaging', packaging_options_hash[:code],
-                         packaging_options_hash[:description]
-      end
 
       def package_weight(weight, unit)
         pkg_weight = element_with_value('PackageWeight', {})
@@ -199,7 +176,7 @@ module UPS
       end
 
       def unit_of_measurement(unit)
-        multi_valued('UnitOfMeasurement', 'Code' => unit.to_s)
+        multi_valued('UnitOfMeasurement', 'Code' => unit.to_s, 'Description' => unit.to_s)
       end
 
       def element_with_value(name, value)

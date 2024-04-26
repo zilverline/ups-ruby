@@ -39,6 +39,10 @@ class UPS::Builders::TestRateBuilder < Minitest::Test
     assert_equal package[:weight], @rate_builder.as_json['RateRequest']['Shipment']['Package'][0]['PackageWeight']['Weight']
   end
 
+  def test_has_correct_packaging_type
+    assert_equal '02', @rate_builder.as_json['RateRequest']['Shipment']['Package'][0]['PackagingType']['Code']
+  end
+
   def test_has_correct_return_service
     assert_equal '10', @rate_builder.as_json['RateRequest']['Shipment']['ShipmentServiceOptions']['ReturnService']['Code']
   end

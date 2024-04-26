@@ -15,6 +15,27 @@ module UPS
         add_request 'validate'
       end
 
+      # Adds a Package section to the JSON body being built
+      #
+      # @param [Hash] opts A Hash of data to build the requested section
+      # @return [void]
+      def add_package(opts = {})
+        if shipment_root['Package'].nil?
+          shipment_root['Package'] = []
+        end
+
+        item = {}
+        item.merge!(packaging_type(opts[:packaging_type] || customer_supplied_packaging))
+        item.merge!(element_with_value('Description', opts[:description] || ''))
+        item.merge!(package_weight(opts[:weight], opts[:unit]))
+
+        if opts[:dimensions]
+          item.merge!(package_dimensions(opts[:dimensions]))
+        end
+
+        shipment_root['Package'] << item
+      end
+
       # Adds a LabelSpecification section to the JSON body being built
       #
       # @return [void]
@@ -110,6 +131,11 @@ module UPS
 
       def version_string
         "RubyUPS/#{UPS::Version::STRING}"
+      end
+
+      def packaging_type(packaging_options_hash)
+        code_description 'Packaging', packaging_options_hash[:code],
+                         packaging_options_hash[:description]
       end
 
       def label_image_format(format)
