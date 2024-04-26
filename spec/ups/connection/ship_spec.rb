@@ -30,7 +30,7 @@ describe UPS::Connection do
       end
 
       subject do
-        server.authorize ENV['UPS_ACCOUNT_NUMBER'], ENV['UPS_CLIENT_ID'], ENV['UPS_CLIENT_SECRET']
+        server.authorize ENV['UPS_ACCOUNT_NUMBER'], ENV['UPS_CLIENT_ID'], ENV['UPS_CLIENT_SECRET'], true
         server.ship do |shipment_builder|
           shipment_builder.add_shipper shipper
           shipment_builder.add_ship_from shipper
@@ -92,7 +92,7 @@ describe UPS::Connection do
       end
 
       subject do
-        server.authorize ENV['UPS_ACCOUNT_NUMBER'], ENV['UPS_CLIENT_ID'], ENV['UPS_CLIENT_SECRET']
+        server.authorize ENV['UPS_ACCOUNT_NUMBER'], ENV['UPS_CLIENT_ID'], ENV['UPS_CLIENT_SECRET'], true
         server.ship do |shipment_builder|
           shipment_builder.add_shipper shipper
           shipment_builder.add_ship_from shipper
@@ -126,7 +126,7 @@ describe UPS::Connection do
       let(:second_package) { subject.packages[1] }
 
       subject do
-        server.authorize ENV['UPS_ACCOUNT_NUMBER'], ENV['UPS_CLIENT_ID'], ENV['UPS_CLIENT_SECRET']
+        server.authorize ENV['UPS_ACCOUNT_NUMBER'], ENV['UPS_CLIENT_ID'], ENV['UPS_CLIENT_SECRET'], true
         server.ship do |shipment_builder|
           shipment_builder.add_shipper shipper
           shipment_builder.add_ship_from shipper
@@ -208,7 +208,7 @@ describe UPS::Connection do
     end
 
     subject do
-      server.authorize ENV['UPS_ACCOUNT_NUMBER'], ENV['UPS_CLIENT_ID'], ENV['UPS_CLIENT_SECRET']
+      server.authorize ENV['UPS_ACCOUNT_NUMBER'], ENV['UPS_CLIENT_ID'], ENV['UPS_CLIENT_SECRET'], true
       server.ship do |shipment_builder|
         shipment_builder.add_shipper shipper
         shipment_builder.add_ship_from shipper

@@ -15,7 +15,7 @@ describe UPS::Connection do
 
   describe 'label request' do
     subject do
-      server.authorize ENV['UPS_ACCOUNT_NUMBER'], ENV['UPS_CLIENT_ID'], ENV['UPS_CLIENT_SECRET']
+      server.authorize ENV['UPS_ACCOUNT_NUMBER'], ENV['UPS_CLIENT_ID'], ENV['UPS_CLIENT_SECRET'], true
       server.label do |label_builder|
         label_builder.add_tracking_number '1Z1107YY8567985294'
         label_builder.add_label_specification 'PNG'

@@ -18,7 +18,7 @@ describe UPS::Connection do
 
   describe 'if requesting rates' do
     subject do
-      server.authorize ENV['UPS_ACCOUNT_NUMBER'], ENV['UPS_CLIENT_ID'], ENV['UPS_CLIENT_SECRET']
+      server.authorize ENV['UPS_ACCOUNT_NUMBER'], ENV['UPS_CLIENT_ID'], ENV['UPS_CLIENT_SECRET'], true
       server.rates do |rate_builder|
         rate_builder.add_shipper shipper
         rate_builder.add_ship_from shipper

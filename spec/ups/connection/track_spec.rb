@@ -18,7 +18,7 @@ describe UPS::Connection do
 
   describe 'if tracking shipment' do
     subject do
-      server.authorize ENV['UPS_ACCOUNT_NUMBER'], ENV['UPS_CLIENT_ID'], ENV['UPS_CLIENT_SECRET']
+      server.authorize ENV['UPS_ACCOUNT_NUMBER'], ENV['UPS_CLIENT_ID'], ENV['UPS_CLIENT_SECRET'], true
       server.track '1Z12345E6692804405'
     end
 
@@ -42,7 +42,7 @@ describe UPS::Connection do
 
   describe 'if tracking shipment with no tracking number' do
     subject do
-      server.authorize ENV['UPS_ACCOUNT_NUMBER'], ENV['UPS_CLIENT_ID'], ENV['UPS_CLIENT_SECRET']
+      server.authorize ENV['UPS_ACCOUNT_NUMBER'], ENV['UPS_CLIENT_ID'], ENV['UPS_CLIENT_SECRET'], true
       server.track ''
     end
 

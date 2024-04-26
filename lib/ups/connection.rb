@@ -126,9 +126,10 @@ module UPS
     # @param [String] account_number Account number to use for the request
     # @param [String] client_id Client ID to use
     # @param [String] client_secret Client secret to use
+    # @param [Boolean] mock If the request should be mocked
     # @return [void]
-    def authorize(account_number, client_id, client_secret)
-      if url == TEST_URL
+    def authorize(account_number, client_id, client_secret, mock = false)
+      if mock
         self.account_number = account_number
         self.client_id = client_id
         self.client_secret = client_secret
