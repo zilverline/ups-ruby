@@ -129,6 +129,10 @@ module UPS
     # @param [Boolean] mock If the request should be mocked
     # @return [void]
     def authorize(account_number, client_id, client_secret, mock = false)
+      if @token_data && !@token_data.empty?
+        return nil
+      end
+
       if mock
         self.account_number = account_number
         self.client_id = client_id
