@@ -107,9 +107,9 @@ module UPS
     # option or a block yielded to configure a new {Builders::LabelRecoveryRequestBuilder}
     # object.
     #
-    # @param [Builders::LabelRecoveryRequestBuilder] track_builder A pre-configured
+    # @param [Builders::LabelRecoveryRequestBuilder] label_builder A pre-configured
     #   {Builders::LabelRecoveryRequestBuilder} object to use
-    # @yield [track_builder] A LabelRecoveryRequestBuilder object for configuring
+    # @yield [label_builder] A LabelRecoveryRequestBuilder object for configuring
     #   the label request information sent
     def label(label_builder = nil)
       if label_builder.nil? && block_given?
@@ -128,8 +128,8 @@ module UPS
     # @param [String] client_secret Client secret to use
     # @param [Boolean] mock If the request should be mocked
     # @return [void]
-    def authorize(account_number, client_id, client_secret, mock = false)
-      if @token_data && !@token_data.empty?
+    def authorize(account_number = '', client_id = '', client_secret = '', mock = false)
+      if @token_data && !@token_data.nil? && !@token_data.empty?
         return nil
       end
 
@@ -149,7 +149,7 @@ module UPS
       end
 
       # Make sure we were given credentials for OAuth
-      if account_number.empty? || client_id.empty? || client_secret.empty?
+      if account_number.nil? || account_number.empty? || client_id.nil? || client_id.empty? || client_id.nil? || client_secret.empty?
         fail Exceptions::AuthorizationError,
              'Missing account_number, client_id, or client_secret'
       end
@@ -191,7 +191,7 @@ module UPS
     # Makes a request to the UPS API
     #
     # @param [String] path The path to make the request to
-    # @param [Optional, String] body The body to send with the request
+    # @param [Optional, Hash] body The body to send with the request
     # @return [Excon::Response] The response from the request
     def get_response(path, body = {})
       access_token = get_access_token
