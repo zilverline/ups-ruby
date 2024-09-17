@@ -200,7 +200,8 @@ module UPS
       headers = {
         'Content-Type' => 'application/json',
         'Authorization' => "Bearer #{access_token}",
-        'transId' => SecureRandom.hex(16) # Unique identifier for this request
+        'transId' => SecureRandom.hex(16), # Unique identifier for this request
+        'transactionSrc' => 'testing' # Identifies client/source app that is calling, UPS has default of 'testing' (sometimes)
       }
 
       if method.downcase == 'get'
