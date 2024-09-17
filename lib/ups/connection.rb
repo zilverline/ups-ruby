@@ -198,7 +198,8 @@ module UPS
 
       headers = {
         'Content-Type' => 'application/json',
-        'Authorization' => "Bearer #{access_token}"
+        'Authorization' => "Bearer #{access_token}",
+        'transId' => SecureRandom.hex(16) # Unique identifier for this request
       }
 
       Excon.post(
