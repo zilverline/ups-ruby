@@ -24,7 +24,7 @@ describe UPS::Connection do
 
     describe 'successful track response' do
       before do
-        Excon.stub({ :method => :post }, lambda {|params|
+        Excon.stub({ :method => :get }, lambda {|params|
           { :body => File.read("#{stub_path}/track_success.json"), :status => 200 }
         })
       end
