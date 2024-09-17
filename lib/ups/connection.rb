@@ -97,7 +97,7 @@ module UPS
         fail Exceptions::InvalidAttributeError, 'Tracking number is required'
       end
 
-      response = get_response(TRACK_PATH + "/#{number}")
+      response = get_response(TRACK_PATH + "/#{number}", {}, 'GET')
       UPS::Parsers::TrackParser.new(response.body)
     end
 
@@ -192,8 +192,9 @@ module UPS
     #
     # @param [String] path The path to make the request to
     # @param [Optional, Hash] body The body to send with the request
+    # @param [Optional, String] method The method type to use for the request
     # @return [Excon::Response] The response from the request
-    def get_response(path, body = {})
+    def get_response(path, body = {}, method = 'post')
       access_token = get_access_token
 
       headers = {
@@ -202,11 +203,18 @@ module UPS
         'transId' => SecureRandom.hex(16) # Unique identifier for this request
       }
 
-      Excon.post(
-        build_url(path),
-        headers: headers,
-        body: body.to_json
-      )
+      if method.downcase == 'get'
+        Excon.get(
+          build_url(path),
+          headers: headers
+        )
+      else
+        Excon.post(
+          build_url(path),
+          headers: headers,
+          body: body.to_json
+        )
+      end
     end
 
     def make_confirm_request(confirm_builder)
