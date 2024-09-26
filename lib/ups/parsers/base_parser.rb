@@ -18,11 +18,19 @@ module UPS
       end
 
       def status_code
-        root_response[:Response][:ResponseStatus][:Code]
+        if root_response
+          root_response[:Response][:ResponseStatus][:Code]
+        else
+          '-1'
+        end
       end
 
       def status_description
-        root_response[:Response][:ResponseStatus][:Description]
+        if root_response
+          root_response[:Response][:ResponseStatus][:Description]
+        else
+          ''
+        end
       end
 
       def error_description
