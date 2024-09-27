@@ -26,7 +26,7 @@ module UPS
       end
 
       def status_type_code
-        status_type[:code]
+        status_type[:type]
       end
 
       private
