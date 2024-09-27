@@ -20,7 +20,8 @@
                   }
                 },
                 "status": {
-                  "code": "D",
+                  "type": "D",
+                  "code": "KB",
                   "description": "DELIVERED"
                 },
                 "time": "120000"
