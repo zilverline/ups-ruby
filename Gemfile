@@ -1,5 +1,4 @@
 source 'http://rubygems.org'
-gem "levenshtein-ffi", git: "https://github.com/zilverline/levenshtein-ffi.git"
 gemspec
 
 group :development, :test do

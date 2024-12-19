@@ -4,7 +4,6 @@ PATH
     ups-ruby (0.17.1)
       excon (~> 0.45, >= 0.45.3)
       insensitive_hash (~> 0.3.3)
-      levenshtein-ffi (~> 1.1)
       ox (~> 2.2, >= 2.2.0)
 
 GEM
@@ -15,12 +14,9 @@ GEM
       simplecov (<= 0.13)
     docile (1.1.5)
     excon (0.110.0)
-    ffi (1.16.3)
     insensitive_hash (0.3.3)
     json (2.7.2)
     language_server-protocol (3.17.0.3)
-    levenshtein-ffi (1.1.0)
-      ffi (~> 1.9)
     minitest (5.22.3)
     ox (2.14.18)
     parallel (1.24.0)
